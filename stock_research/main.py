@@ -1,4 +1,5 @@
 from stock_research.backend.app import app
+from stock_research.backend.message_broker import message_broker
 import webbrowser
 import threading
 import time
@@ -9,7 +10,7 @@ def open_chrome_extension():
     User will need to load the extension manually first time.
     """
     time.sleep(2)
-    webbrowser.open('chrome://extensions/')
+    #webbrowser.open('chrome://extensions/')
     print("Please load the extension from the Chrome extensions page if not already loaded.")
 
 def main():
@@ -24,7 +25,7 @@ def main():
         host='127.0.0.1',
         port=5000,
         debug=True,
-        use_reloader=False
+        use_reloader=False  # Disable reloader when running in main
     )
 
 if __name__ == "__main__":

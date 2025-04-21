@@ -1,40 +1,52 @@
 from flask import Flask, request, Response, stream_with_context
-import json
-import time
 from flask_cors import CORS
+import json
+import re
+from .message_broker import message_broker
+from .stock_agent_handler import start_stock_analysis
 
 app = Flask(__name__)
 CORS(app)
 
-def process_stock_query(query):
-    # This is where you would implement your actual stock research logic
-    # For now, we'll simulate processing with some dummy responses
-    updates = [
-        "Analyzing your query...",
-        "Fetching market data...",
-        "Processing financial statements...",
-        f"Final analysis for query: '{query}' completed. Here's a summary of findings..."
-    ]
-    return updates
+def extract_stock_symbol(query: str) -> str:
+    """Extract stock symbol from query text"""
+    # Simple regex to find stock symbols (can be enhanced)
+    matches = re.findall(r'\b[A-Z]{1,5}\b', query.upper())
+    return matches[0] if matches else None
 
 @app.route('/query')
 def query():
     query_text = request.args.get('message', '')
     
+    # Create a new processing session
+    session = message_broker.create_session()
+    
+    # Enhance the query with stock-specific context if needed
+    symbol = extract_stock_symbol(query_text)
+    if symbol:
+        enhanced_query = f"{query_text}"
+        # Start the agent-based analysis
+        start_stock_analysis(session.session_id, enhanced_query)
+    else:
+        message_broker.send_update(
+            session.session_id,
+            "I couldn't find a stock symbol in your query. Please provide a valid stock symbol (e.g., AAPL, MSFT).",
+            "final"
+        )
+        message_broker.close_session(session.session_id)
+
     def generate():
-        # Get processing updates
-        updates = process_stock_query(query_text)
-        
-        # Send intermediate updates
-        for i, update in enumerate(updates):
-            if i < len(updates) - 1:
-                data = {'type': 'update', 'content': update}
-                yield f"data: {json.dumps(data)}\n\n"
-                time.sleep(1)  # Simulate processing time
-            else:
-                # Send final message
-                data = {'type': 'final', 'content': update}
-                yield f"data: {json.dumps(data)}\n\n"
+        """Generate SSE events from the message queue"""
+        while True:
+            message = session.message_queue.get()  # Blocks until message is available
+            
+            if message is None:  # Session is complete
+                break
+                
+            yield f"data: {json.dumps(message)}\n\n"
+            
+            if message['type'] == 'final':
+                break
 
     return Response(
         stream_with_context(generate()),
