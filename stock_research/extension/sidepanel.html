@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock Research Assistant</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <img src="icons/icon48.png" alt="Assistant Icon" class="header-icon">
+                <div class="header-text">
+                    <h1>Stock Research Assistant</h1>
+                    <span class="status">Online</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chat-container" id="chatContainer">
+            <!-- Welcome message -->
+            <div class="message assistant-message">
+                <div class="message-content">
+                    <p>👋 Hello! I'm your Stock Research Assistant. How can I help you today?</p>
+                    <p class="suggestion">Try asking about:</p>
+                    <div class="suggestions">
+                        <button class="suggestion-btn">"AAPL stock analysis"</button>
+                        <button class="suggestion-btn">"Market trends today"</button>
+                        <button class="suggestion-btn">"Top performing stocks"</button>
+                    </div>
+                </div>
+                <div class="timestamp">Now</div>
+            </div>
+        </div>
+        
+        <div class="input-container">
+            <div class="input-wrapper">
+                <textarea id="userInput" 
+                         placeholder="Ask about any stock or market trend..."
+                         rows="1"
+                         autofocus></textarea>
+                <button id="sendButton" class="send-button">
+                    <span class="material-icons">send</span>
+                </button>
+            </div>
+            <div class="typing-indicator" style="display: none;">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+    <script src="sidepanel.js"></script>
+</body>
+</html>

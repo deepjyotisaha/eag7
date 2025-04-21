@@ -1,5 +1,6 @@
-from google import genai
-from google.genai import types
+#from google import genai
+#from google.genai import types
+import google.generativeai as genai
 import faiss
 import numpy as np
 import os
@@ -8,15 +9,22 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # 🔐 Gemini Setup
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+# Configure the API
+api_key = os.getenv('GOOGLE_API_KEY')
+if not api_key:
+    raise ValueError("GOOGLE_API_KEY not found in environment variables")
+
+genai.configure(api_key=api_key)
 
 def get_embedding(text: str) -> np.ndarray:
-    result = client.models.embed_content(
-        model="gemini-embedding-exp-03-07",
-        contents=text,
-        config=types.EmbedContentConfig(task_type="CLUSTERING")
+    result = genai.embed_content(
+        model="models/gemini-embedding-exp-03-07",
+        content=text,
+        #config=types.EmbedContentConfig(task_type="CLUSTERING")
+        task_type="CLUSTERING"
     )
-    return np.array(result.embeddings[0].values, dtype=np.float32)
+    #return np.array(result.embeddings[0].values, dtype=np.float32)
+    return np.array(result['embedding'], dtype=np.float32)
 
 # 🎭 Corpus of jokes with metadata
 jokes = [
@@ -35,6 +43,7 @@ index.add(np.stack(embeddings))
 
 # 🧠 Store joke metadata by index
 metadata_lookup = {i: jokes[i] for i in range(len(jokes))}
+print(f"🔢 Metadata lookup: {metadata_lookup}")
 
 # 🧐 Query
 query = "Something about software engineers and debugging."

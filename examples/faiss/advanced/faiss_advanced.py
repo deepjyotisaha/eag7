@@ -2,19 +2,27 @@ import os
 from pathlib import Path
 import faiss
 import numpy as np
-from google import genai
-from google.genai import types
+#from google import genai
+#from google.genai import types
+import google.generativeai as genai
 from dotenv import load_dotenv
 import time
 
 load_dotenv()
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+# 🔐 Gemini Setup
+# Configure the API
+api_key = os.getenv('GOOGLE_API_KEY')
+if not api_key:
+    raise ValueError("GOOGLE_API_KEY not found in environment variables")
+
+genai.configure(api_key=api_key)
+
 print("hello0")
 
 # -- CONFIG --
 CHUNK_SIZE = 40
 CHUNK_OVERLAP = 10
-DOC_PATH = Path("documents")
+DOC_PATH = Path("./documents")
 
 # -- HELPERS --
 
@@ -28,30 +36,50 @@ def chunk_text(text, size=CHUNK_SIZE, overlap=CHUNK_OVERLAP):
     return chunks
 
 def get_embedding(text: str) -> np.ndarray:
-    res = client.models.embed_content(
-        model="gemini-embedding-exp-03-07",
-        contents=text,
-        config=types.EmbedContentConfig(task_type="RETRIEVAL_DOCUMENT")
+    res = genai.embed_content(
+        model="models/gemini-embedding-exp-03-07",
+        content=text,
+        #config=types.EmbedContentConfig(task_type="RETRIEVAL_DOCUMENT")
+        task_type="RETRIEVAL_DOCUMENT"
     )
-    return np.array(res.embeddings[0].values, dtype=np.float32)
+    #return np.array(res.embeddings[0].values, dtype=np.float32)
+    return np.array(res['embedding'], dtype=np.float32)
 
 # -- LOAD DOCS & CHUNK --
 all_chunks = []
 metadata = []
 
-for file in DOC_PATH.glob("*.txt"):
-    with open(file, "r", encoding="utf-8") as f:
-        content = f.read()
-        chunks = chunk_text(content)
-        for idx, chunk in enumerate(chunks):
-            all_chunks.append(get_embedding(chunk))
-            metadata.append({
-                "doc_name": file.name,
-                "chunk": chunk,
-                "chunk_id": f"{file.stem}_{idx}"
-            })
-    print("Sleeping")
-    time.sleep(5)
+# Print current working directory and documents path for debugging
+print(f"Current working directory: {os.getcwd()}")
+print(f"Documents path: {DOC_PATH.absolute()}")
+print(f"Documents exist: {DOC_PATH.exists()}")
+
+print(f"🔢 Loading documents from {DOC_PATH}")
+
+# List all txt files before processing
+txt_files = list(DOC_PATH.glob("*.txt"))
+print(f"Found {len(txt_files)} txt files: {[f.name for f in txt_files]}")
+
+try:
+    for file in DOC_PATH.glob("*.txt"):
+        print(f"🔢 Processing file: {file.name}")
+        with open(file, "r", encoding="utf-8") as f:
+            print(f"🔢 Reading file: {file.name}")
+            content = f.read()
+            chunks = chunk_text(content)
+            print(f"file: {file.name} 🔢 Chunks: {chunks}")
+            for idx, chunk in enumerate(chunks):
+                all_chunks.append(get_embedding(chunk))
+                metadata.append({
+                    "doc_name": file.name,
+                    "chunk": chunk,
+                    "chunk_id": f"{file.stem}_{idx}"
+                })
+            print(f"🔢 🔢 Metadata for {file.name}: {metadata}")
+        print("Sleeping for 5 seconds")
+        time.sleep(5)
+except Exception as e:
+    print(f"Error: {e}")
 
 # -- CREATE FAISS INDEX --
 dimension = len(all_chunks[0])
