@@ -62,6 +62,8 @@ async def main(user_input: str):
                             query = user_input  # Store original intent
                             step = 0
 
+                            print("Running agent with query:", user_input)
+
                             while step < max_steps:
                                 log("loop", f"Step {step + 1} started")
 
@@ -71,7 +73,7 @@ async def main(user_input: str):
                                 retrieved = memory.retrieve(query=user_input, top_k=3, session_filter=session_id)
                                 log("memory", f"Retrieved {len(retrieved)} relevant memories")
 
-                                print("retrieved memories:", retrieved)
+                                #print("retrieved memories:", retrieved)
 
                                 plan = generate_plan(perception, retrieved, tool_descriptions=tool_descriptions)
                                 log("plan", f"Plan generated: {plan}")

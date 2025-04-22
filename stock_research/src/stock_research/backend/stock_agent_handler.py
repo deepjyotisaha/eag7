@@ -36,6 +36,8 @@ async def process_stock_query(session_id: str, query: str):
         # Replace the log function in the agent module
         sys.modules[agent_log.__module__].log = new_log
 
+        print("Running agent with query:", query)
+
         # Run the agent
         await agent_main(query)
 

@@ -24,7 +24,7 @@ import logging
 logging.basicConfig(
     #filename='mcp_server.log',
     #filemode='w',  # 'w' means write/overwrite (instead of 'a' for append)
-    level=logging.DEBUG,
+    level=logging.ERROR,
     format='%(asctime)s - %(levelname)s - %(funcName)20s() %(message)s',
         handlers=[
         logging.FileHandler('example3.log', mode='w'),
