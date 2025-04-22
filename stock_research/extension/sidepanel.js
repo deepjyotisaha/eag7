@@ -4,11 +4,13 @@ class StockResearchAssistant {
         this.userInput = document.getElementById('userInput');
         this.sendButton = document.getElementById('sendButton');
         this.typingIndicator = document.querySelector('.typing-indicator');
+        this.statusIndicator = document.querySelector('.status');
         this.backendUrl = 'http://localhost:5000';
         
         this.setupEventListeners();
         this.setupSuggestions();
         this.setupAutoResize();
+        this.checkServerStatus();
     }
 
     setupEventListeners() {
@@ -37,16 +39,58 @@ class StockResearchAssistant {
         });
     }
 
+    async checkServerStatus() {
+        try {
+            const response = await fetch(`${this.backendUrl}/status`);
+            const data = await response.json();
+            
+            if (data.status === 'ready') {
+                this.statusIndicator.textContent = 'Online';
+                this.statusIndicator.className = 'status online';
+                this.addMessage('I am ready to help! Here are the tools I can use:\n' + data.tools, 'assistant');
+                this.enableInput();
+            } else {
+                this.statusIndicator.textContent = 'Initializing...';
+                this.statusIndicator.className = 'status initializing';
+                this.disableInput();
+                setTimeout(() => this.checkServerStatus(), 5000);
+            }
+        } catch (error) {
+            console.error('Server status check failed:', error);
+            this.statusIndicator.textContent = 'Offline';
+            this.statusIndicator.className = 'status offline';
+            this.addMessage('Unable to connect to the server. Please try again later.', 'assistant');
+            this.disableInput();
+            setTimeout(() => this.checkServerStatus(), 10000);
+        }
+    }
+
+    enableInput() {
+        this.userInput.disabled = false;
+        this.sendButton.disabled = false;
+        document.querySelectorAll('.suggestion-btn').forEach(btn => {
+            btn.disabled = false;
+        });
+    }
+
+    disableInput() {
+        this.userInput.disabled = true;
+        this.sendButton.disabled = true;
+        document.querySelectorAll('.suggestion-btn').forEach(btn => {
+            btn.disabled = true;
+        });
+    }
+
     async handleUserInput() {
         const message = this.userInput.value.trim();
         if (!message) return;
 
-        // Add user message
+        this.disableInput();
+
         this.addMessage(message, 'user');
         this.userInput.value = '';
         this.userInput.style.height = 'auto';
 
-        // Show typing indicator
         this.showTypingIndicator();
 
         try {
@@ -63,6 +107,7 @@ class StockResearchAssistant {
                     this.addMessage(data.content, 'assistant');
                     this.addMessage("What else would you like to know?", 'assistant');
                     eventSource.close();
+                    this.enableInput();
                 }
             };
 
@@ -71,12 +116,14 @@ class StockResearchAssistant {
                 this.hideTypingIndicator();
                 this.addMessage('Sorry, there was an error processing your request.', 'assistant');
                 eventSource.close();
+                this.enableInput();
             };
 
         } catch (error) {
             console.error('Error:', error);
             this.hideTypingIndicator();
             this.addMessage('Sorry, there was an error processing your request.', 'assistant');
+            this.enableInput();
         }
     }
 
@@ -126,7 +173,6 @@ class StockResearchAssistant {
     }
 }
 
-// Initialize the assistant when the document is loaded
 document.addEventListener('DOMContentLoaded', () => {
     new StockResearchAssistant();
 });

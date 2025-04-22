@@ -3,6 +3,7 @@ from flask_cors import CORS
 import json
 import re
 from .message_broker import message_broker
+from .server_manager import mcp_server
 from .stock_agent_handler import start_stock_analysis
 
 app = Flask(__name__)
@@ -14,12 +15,43 @@ def extract_stock_symbol(query: str) -> str:
     matches = re.findall(r'\b[A-Z]{1,5}\b', query.upper())
     return matches[0] if matches else None
 
+# Initialize services at startup instead of before_first_request
+def initialize_services():
+    """Initialize services"""
+    # Start MCP server
+    mcp_server.start()
+    
+    # Wait for initialization
+    if not mcp_server.wait_for_initialization():
+        app.logger.error("Failed to initialize MCP server")
+        return
+    
+    # Log available tools
+    app.logger.info(mcp_server.get_tools_description())
+
+# Initialize services when the module is imported
+initialize_services()
+
+@app.route('/status')
+def status():
+    """Get server status and available tools"""
+    return {
+        "status": "ready" if mcp_server.initialized else "initializing",
+        "tools": mcp_server.get_tools_description()
+    }
+
 @app.route('/query')
 def query():
     query_text = request.args.get('message', '')
     
     # Create a new processing session
     session = message_broker.create_session()
+    
+    # Send initial status
+    message_broker.send_update(
+        session.session_id,
+        f"Processing query: {query_text}"
+    )
     
     # Enhance the query with stock-specific context if needed
     symbol = extract_stock_symbol(query_text)

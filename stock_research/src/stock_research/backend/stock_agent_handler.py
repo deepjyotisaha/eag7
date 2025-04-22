@@ -1,23 +1,25 @@
 import asyncio
-from ..agent.agent import main as agent_main, log as agent_log
+from ..agent.agent import agent, log as agent_log
 from .message_broker import message_broker
 import sys
 import types
+from .server_manager import mcp_server
+import threading
 
-async def process_stock_query(session_id: str, query: str):
-    """
-    Process a stock query using the agent and send updates via message broker
-    """
+async def process_agent_query(session_id: str, query: str):
+    """Process a query using the agent instance"""
     try:
-        # Store original log function
+        if not mcp_server.initialized:
+            message_broker.send_update(session_id, "Waiting for server initialization...")
+            if not mcp_server.wait_for_initialization():
+                raise Exception("Server initialization timeout")
+        
         original_log = agent_log
 
-        # Create a new log function that sends updates to the message broker
         def new_log(stage: str, msg: str):
-            # Still call original log for console output
             original_log(stage, msg)
+            print(f"[{stage}] {msg}")  # Add direct console logging
             
-            # Convert agent logs to user updates
             if stage == "perception":
                 message_broker.send_update(session_id, f"Understanding query: {msg}")
             elif stage == "memory":
@@ -33,33 +35,34 @@ async def process_stock_query(session_id: str, query: str):
                 else:
                     message_broker.send_update(session_id, msg)
 
-        # Replace the log function in the agent module
         sys.modules[agent_log.__module__].log = new_log
 
-        print("Running agent with query:", query)
-
-        # Run the agent
-        await agent_main(query)
+        try:
+            async def process_with_session(session):
+                return await agent.process_query(
+                    session=session,
+                    user_input=query,
+                    tools=mcp_server.tools,
+                    tool_descriptions=mcp_server.tool_descriptions,
+                    session_id=session_id
+                )
+            
+            await mcp_server.execute_command(process_with_session)
+            
+        finally:
+            sys.modules[agent_log.__module__].log = original_log
 
     except Exception as e:
-        message_broker.send_update(
-            session_id, 
-            f"Error during analysis: {str(e)}", 
-            "final"
-        )
+        error_msg = f"Error during analysis: {str(e)}"
+        print(error_msg)
+        message_broker.send_update(session_id, error_msg, "final")
     finally:
-        # Restore original log function
-        sys.modules[agent_log.__module__].log = original_log
         message_broker.close_session(session_id)
 
 def start_stock_analysis(session_id: str, query: str):
     """Start stock analysis in a background thread"""
-    async def run_analysis():
-        await process_stock_query(session_id, query)
-
     def thread_target():
-        asyncio.run(run_analysis())
+        asyncio.run(process_agent_query(session_id, query))
 
-    import threading
     thread = threading.Thread(target=thread_target)
     thread.start()

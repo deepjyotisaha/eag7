@@ -5,6 +5,38 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        .status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status.online {
+            background-color: #10B981;
+            color: white;
+        }
+
+        .status.offline {
+            background-color: #EF4444;
+            color: white;
+        }
+
+        .status.initializing {
+            background-color: #F59E0B;
+            color: white;
+        }
+
+        .input-container.disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .input-container.disabled * {
+            pointer-events: none;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -13,7 +45,7 @@
                 <img src="icons/icon48.png" alt="Assistant Icon" class="header-icon">
                 <div class="header-text">
                     <h1>Stock Research Assistant</h1>
-                    <span class="status">Online</span>
+                    <span class="status initializing">Initializing...</span>
                 </div>
             </div>
         </div>

@@ -12,6 +12,7 @@ from mcp.client.stdio import stdio_client
 
 import shutil
 import sys
+from typing import Optional
 
 
 
@@ -83,8 +84,12 @@ async def main(user_input: str):
 
                                 try:
                                     result = await execute_tool(session, tools, plan)
+                                    if isinstance(result.result, str) and result.result.startswith("Error:"):
+                                        log("error", f"Tool execution returned error: {result.result}")
+                                        break
+                                        
                                     log("tool", f"{result.tool_name} returned: {result.result}")
-
+                                    
                                     memory.add(MemoryItem(
                                         text=f"Tool call: {result.tool_name} with {result.arguments}, got: {result.result}",
                                         type="tool_output",
@@ -93,11 +98,11 @@ async def main(user_input: str):
                                         tags=[result.tool_name],
                                         session_id=session_id
                                     ))
-
+                                    
                                     user_input = f"Original task: {query}\nPrevious output: {result.result}\nWhat should I do next?"
-
+                                    
                                 except Exception as e:
-                                    log("error", f"Tool execution failed: {e}")
+                                    log("error", f"Tool execution failed: {str(e)}")
                                     break
 
                                 step += 1

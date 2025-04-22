@@ -58,25 +58,46 @@ def parse_function_call(response: str) -> tuple[str, Dict[str, Any]]:
 
 async def execute_tool(session: ClientSession, tools: list[Any], response: str) -> ToolCallResult:
     """Executes a FUNCTION_CALL via MCP tool session."""
+    tool_name = "unknown"
+    arguments = {}
+    
     try:
+        print(f"Starting tool execution for response: {response}")
         tool_name, arguments = parse_function_call(response)
+        print(f"Parsed tool call: {tool_name} with args {arguments}")
 
         tool = next((t for t in tools if t.name == tool_name), None)
         if not tool:
             raise ValueError(f"Tool '{tool_name}' not found in registered tools")
 
         log("tool", f"⚙️ Calling '{tool_name}' with: {arguments}")
-        result = await session.call_tool(tool_name, arguments=arguments)
+        print(f"Calling tool {tool_name} with session {id(session)}")
+        
+        try:
+            result = await session.call_tool(tool_name, arguments=arguments)
+            print(f"Tool call completed, result: {result}")
+            log("tool", f"Raw result from tool: {result}")
+        except Exception as e:
+            print(f"Tool call failed: {str(e)}")
+            log("tool", f"❌ Tool call failed: {str(e)}")
+            raise
 
-        if hasattr(result, 'content'):
+        if result is None:
+            log("tool", "⚠️ Tool returned None")
+            out = "No result returned from tool"
+        elif hasattr(result, 'content'):
             if isinstance(result.content, list):
                 out = [getattr(item, 'text', str(item)) for item in result.content]
             else:
                 out = getattr(result.content, 'text', str(result.content))
+            log("tool", f"Processed content result: {out}")
         else:
             out = str(result)
+            log("tool", f"Converted result to string: {out}")
 
+        print(f"Tool execution completed successfully: {out}")
         log("tool", f"✅ {tool_name} result: {out}")
+        
         return ToolCallResult(
             tool_name=tool_name,
             arguments=arguments,
@@ -85,5 +106,12 @@ async def execute_tool(session: ClientSession, tools: list[Any], response: str) 
         )
 
     except Exception as e:
-        log("tool", f"⚠️ Execution failed for '{response}': {e}")
-        raise
+        error_msg = f"⚠️ Execution failed for '{response}': {str(e)}"
+        print(error_msg)
+        log("tool", error_msg)
+        return ToolCallResult(
+            tool_name=tool_name,
+            arguments=arguments,
+            result=f"Error: {str(e)}",
+            raw_response=None
+        )
