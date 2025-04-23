@@ -61,8 +61,8 @@ def search_documents(query: str) -> list[str]:
     ensure_faiss_ready()
     mcp_log("SEARCH", f"Query: {query}")
     try:
-        index = faiss.read_index(str(ROOT / "faiss_index" / "index.bin"))
-        metadata = json.loads((ROOT / "faiss_index" / "metadata.json").read_text())
+        index = faiss.read_index(str(ROOT / "rag" / "faiss_index" / "index.bin"))
+        metadata = json.loads((ROOT / "rag" / "faiss_index" / "metadata.json").read_text())
         query_vec = get_embedding(query).reshape(1, -1)
         D, I = index.search(query_vec, k=5)
         results = []
@@ -231,8 +231,8 @@ def process_documents():
     """Process documents and create FAISS index"""
     mcp_log("INFO", "Indexing documents with MarkItDown...")
     ROOT = Path(__file__).parent.resolve()
-    DOC_PATH = ROOT / "documents"
-    INDEX_CACHE = ROOT / "faiss_index"
+    DOC_PATH = ROOT / "rag" / "documents"
+    INDEX_CACHE = ROOT / "rag" / "faiss_index"
     INDEX_CACHE.mkdir(exist_ok=True)
     INDEX_FILE = INDEX_CACHE / "index.bin"
     METADATA_FILE = INDEX_CACHE / "metadata.json"

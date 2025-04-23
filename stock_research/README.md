@@ -56,3 +56,6 @@ python main.py
 5. View real-time updates and final analysis
 
 ## Project Structure
+
+## Delete venc
+Remove-Item -Path .\.venv -Recurse -Force
