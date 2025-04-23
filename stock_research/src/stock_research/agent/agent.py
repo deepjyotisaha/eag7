@@ -8,8 +8,10 @@ from .decision import generate_plan
 from .action import execute_tool
 from mcp import ClientSession
 from typing import Optional
+from .userinteraction.userinteraction import user_interaction
 
 def log(stage: str, msg: str):
+    """Simple console logging function"""
     now = datetime.datetime.now().strftime("%H:%M:%S")
     print(f"[{now}] [{stage}] {msg}")
 
@@ -45,6 +47,7 @@ class Agent:
             step = 0
             
             log("agent", f"Processing query: {user_input}")
+            user_interaction.send_update(session_id, "agent", f"Processing your query: {user_input}")
             
             while step < max_steps:
                 log("loop", f"Step {step + 1} started")
@@ -52,6 +55,7 @@ class Agent:
                 # Extract perception
                 perception = extract_perception(user_input)
                 log("perception", f"Intent: {perception.intent}, Tool hint: {perception.tool_hint}")
+                user_interaction.send_update(session_id, "perception", f"Intent: {perception.intent}")
                 
                 # Retrieve relevant memories
                 retrieved = self.memory.retrieve(
@@ -60,6 +64,7 @@ class Agent:
                     session_filter=session_id
                 )
                 log("memory", f"Retrieved {len(retrieved)} relevant memories")
+                user_interaction.send_update(session_id, "memory", f"Retrieved {len(retrieved)} relevant memories")
                 
                 # Generate plan
                 plan = generate_plan(
@@ -68,16 +73,20 @@ class Agent:
                     tool_descriptions=tool_descriptions
                 )
                 log("plan", f"Plan generated: {plan}")
+                user_interaction.send_update(session_id, "plan", "Generated analysis plan")
                 
                 # Check if we have a final answer
                 if plan.startswith("FINAL_ANSWER:"):
-                    log("agent", f"✅ FINAL RESULT: {plan}")
+                    final_result = plan.replace("FINAL_ANSWER:", "").strip()
+                    log("agent", f"✅ FINAL RESULT: {final_result}")
+                    user_interaction.send_update(session_id, "agent", final_result, is_final=True)
                     break
                 
                 # Execute tool
                 try:
                     result = await execute_tool(session, tools, plan)
                     log("tool", f"{result.tool_name} returned: {result.result}")
+                    user_interaction.send_update(session_id, "tool", f"Using {result.tool_name} to analyze data")
                     
                     # Store the result in memory
                     self.memory.add(MemoryItem(
@@ -93,13 +102,17 @@ class Agent:
                     user_input = f"Original task: {query}\nPrevious output: {result.result}\nWhat should I do next?"
                     
                 except Exception as e:
-                    log("error", f"Tool execution failed: {e}")
+                    error_msg = f"Tool execution failed: {e}"
+                    log("error", error_msg)
+                    user_interaction.send_update(session_id, "agent", error_msg, is_final=True)
                     break
                 
                 step += 1
                 
         except Exception as e:
-            log("error", f"Query processing error: {e}")
+            error_msg = f"Query processing error: {e}"
+            log("error", error_msg)
+            user_interaction.send_update(session_id, "agent", error_msg, is_final=True)
             raise
             
         finally:
