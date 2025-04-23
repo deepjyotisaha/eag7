@@ -6,96 +6,51 @@ import asyncio
 from functools import partial
 
 class UserInteraction:
-    # HTML templates
-    STEP_TEMPLATE = """
-    <div class="step-message" style="
-        display: flex;
-        align-items: center;
-        padding: 8px;
-        background-color: #f3f4f6;
-        border-radius: 4px;
-        margin-bottom: 8px;
-        border-left: 4px solid #2563eb;
+    # Common HTML template for all updates
+    MESSAGE_TEMPLATE = """
+    <div class="message-container" style="
         font-family: system-ui, -apple-system, sans-serif;
+        padding: {padding};
+        background-color: white;
+        border-radius: 8px;
+        margin-bottom: {margin};
+        border: 1px solid {border_color};
+        color: black;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
     ">
-        <span style="font-size: 16px; margin-right: 8px;">{icon}</span>
-        <span style="flex: 1;">{content}</span>
+        <div style="
+            border-left: 2px solid {border_color};
+            padding-left: 10px;
+        ">
+            {content}
+        </div>
     </div>
     """
 
-    ITERATION_TEMPLATE = """
-    <div class="iteration-summary" style="
-        padding: 12px;
-        background-color: #ecfdf5;
-        border-radius: 4px;
-        margin-bottom: 12px;
-        border: 1px solid #059669;
-        font-family: system-ui, -apple-system, sans-serif;
-    ">
-        {content}
-    </div>
-    """
-
-    FINAL_TEMPLATE = """
-    <div class="final-result" style="
-        padding: 16px;
-        background-color: #f5f3ff;
-        border-radius: 4px;
-        margin-bottom: 16px;
-        border: 2px solid #6d28d9;
-        font-family: system-ui, -apple-system, sans-serif;
-    ">
-        {content}
-    </div>
-    """
-
-    @staticmethod
-    def format_html_message(content: str, message_type: str = "info") -> str:
-        """Format a message with HTML styling"""
-        styles = {
-            "info": """
-                color: #374151;
-                background-color: #f3f4f6;
-                padding: 8px;
-                border-radius: 4px;
-                margin-bottom: 8px;
-            """,
-            "step": """
-                color: #2563eb;
-                background-color: #eff6ff;
-                padding: 8px;
-                border-radius: 4px;
-                margin-bottom: 8px;
-                border-left: 4px solid #2563eb;
-            """,
-            "tool": """
-                color: #059669;
-                background-color: #ecfdf5;
-                padding: 12px;
-                border-radius: 4px;
-                margin-bottom: 12px;
-                border: 1px solid #059669;
-            """,
-            "final": """
-                color: #6d28d9;
-                background-color: #f5f3ff;
-                padding: 16px;
-                border-radius: 4px;
-                margin-bottom: 16px;
-                border: 2px solid #6d28d9;
-                font-weight: bold;
-            """,
-            "error": """
-                color: #dc2626;
-                background-color: #fef2f2;
-                padding: 12px;
-                border-radius: 4px;
-                margin-bottom: 12px;
-                border: 1px solid #dc2626;
-            """
-        }.get(message_type, "")
-        
-        return f'<div style="{styles}">{content}</div>'
+    # Style configurations for different message types
+    STYLES = {
+        "step": {
+            "padding": "8px 12px",
+            "bg_color": "#ffffff",
+            "margin": "8px",
+            "border_color": "rgba(37, 99, 235, 0.15)",
+            "text_color": "black"
+        },
+        "iteration": {
+            "padding": "12px 16px",
+            "bg_color": "#ffffff",
+            "margin": "12px",
+            "border_color": "rgba(5, 150, 105, 0.15)",
+            "text_color": "black"
+        },
+        "final": {
+            "padding": "16px 20px",
+            "bg_color": "#ffffff",
+            "margin": "16px",
+            "border_color": "rgba(109, 40, 217, 0.15)",
+            "text_color": "black"
+        }
+    }
 
     @staticmethod
     async def _generate_llm_response(llm_manager: LLMManager, prompt: str) -> str:
@@ -122,9 +77,17 @@ class UserInteraction:
         }
         
         icon = icons.get(stage, "ℹ️")
-        html = UserInteraction.STEP_TEMPLATE.format(
-            icon=icon,
-            content=message
+        
+        content = f"""
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 16px;">{icon}</span>
+            <span style="flex: 1;">{message}</span>
+        </div>
+        """
+        
+        html = UserInteraction.MESSAGE_TEMPLATE.format(
+            content=content,
+            **UserInteraction.STYLES["step"]
         )
         
         message_broker.send_update(session_id, html)
@@ -135,7 +98,6 @@ class UserInteraction:
         if not session_id or not iteration_data:
             return
 
-        # Prepare prompt for LLM
         prompt = f"""
         Create a clear, concise summary of this analysis step.
         Focus on explaining what was done, what inputs were used, and what was discovered.
@@ -160,7 +122,21 @@ class UserInteraction:
                 • Result: {iteration_data.get('result', 'No result available')}
                 """
 
-            html = UserInteraction.ITERATION_TEMPLATE.format(content=summary)
+            content = f"""
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 16px;">📊</span>
+                    <h4 style="margin: 0; font-size: 16px; color: black;">Analysis Step Summary</h4>
+                </div>
+                <div style="line-height: 1.5; color: black;">{summary}</div>
+            </div>
+            """
+
+            html = UserInteraction.MESSAGE_TEMPLATE.format(
+                content=content,
+                **UserInteraction.STYLES["iteration"]
+            )
+            
             message_broker.send_update(session_id, html)
         except Exception as e:
             message_broker.send_update(session_id, f"Error creating summary: {str(e)}")
@@ -171,7 +147,6 @@ class UserInteraction:
         if not session_id or not raw_data:
             return
 
-        # Prepare prompt for LLM
         prompt = f"""
         Create a clear, user-friendly summary of the {query_type} results.
         Focus on the key findings and insights that would be most valuable to the user.
@@ -194,7 +169,21 @@ class UserInteraction:
             if not summary:
                 summary = str(raw_data.get('result', 'No results available'))
 
-            html = UserInteraction.FINAL_TEMPLATE.format(content=summary)
+            content = f"""
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 18px;">🎯</span>
+                    <h3 style="margin: 0; font-size: 18px; color: black;">{query_type.title()} Results</h3>
+                </div>
+                <div style="line-height: 1.6; color: black;">{summary}</div>
+            </div>
+            """
+
+            html = UserInteraction.MESSAGE_TEMPLATE.format(
+                content=content,
+                **UserInteraction.STYLES["final"]
+            )
+            
             message_broker.send_update(session_id, html, "final")
         except Exception as e:
             message_broker.send_update(session_id, f"Error creating final summary: {str(e)}", "error")
@@ -218,7 +207,7 @@ class UserInteraction:
                 await UserInteraction.send_iteration_summary(session_id, iteration_data, llm_manager)
                 return
 
-            # Handle step update (this one is synchronous)
+            # Handle step update
             UserInteraction.send_step_update(session_id, stage, message)
 
         except Exception as e:
