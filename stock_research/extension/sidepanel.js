@@ -99,15 +99,23 @@ class StockResearchAssistant {
             eventSource.onmessage = (event) => {
                 const data = JSON.parse(event.data);
                 
-                if (data.type === 'update') {
+                if (data.type === 'update' || data.type === 'final') {
                     this.hideTypingIndicator();
+                    
+                    // Create a temporary div to check if content is HTML
+                    const temp = document.createElement('div');
+                    temp.innerHTML = data.content;
+                    
+                    // Add the message
                     this.addMessage(data.content, 'assistant');
-                } else if (data.type === 'final') {
-                    this.hideTypingIndicator();
-                    this.addMessage(data.content, 'assistant');
-                    this.addMessage("What else would you like to know?", 'assistant');
-                    eventSource.close();
-                    this.enableInput();
+                    
+                    if (data.type === 'final') {
+                        setTimeout(() => {
+                            this.addMessage("What else would you like to know?", 'assistant');
+                        }, 500);
+                        eventSource.close();
+                        this.enableInput();
+                    }
                 }
             };
 
@@ -133,7 +141,15 @@ class StockResearchAssistant {
         
         const messageContent = document.createElement('div');
         messageContent.className = 'message-content';
-        messageContent.innerHTML = `<p>${this.escapeHtml(content)}</p>`;
+        
+        // Check if the content contains HTML tags
+        if (content.includes('<div') || content.includes('<style')) {
+            // If it's HTML content, insert it directly
+            messageContent.innerHTML = content;
+        } else {
+            // If it's plain text, escape it
+            messageContent.innerHTML = `<p>${this.escapeHtml(content)}</p>`;
+        }
         
         const timestamp = document.createElement('div');
         timestamp.className = 'timestamp';

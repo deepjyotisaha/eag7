@@ -82,27 +82,24 @@ body {
 }
 
 .message {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 8px;
     max-width: 85%;
-    padding: 0.75rem 1rem;
-    border-radius: 1rem;
-    position: relative;
 }
 
 .message-content {
-    font-size: 0.9375rem;
+    width: 100%;
 }
 
 .user-message {
-    background-color: var(--message-user-bg);
     margin-left: auto;
-    border-bottom-right-radius: 0.25rem;
+    background-color: #e3f2fd;
 }
 
 .assistant-message {
-    background-color: var(--message-assistant-bg);
     margin-right: auto;
-    border-bottom-left-radius: 0.25rem;
-    border: 1px solid var(--border-color);
+    background-color: #f8f9fa;
 }
 
 .timestamp {
@@ -257,4 +254,58 @@ textarea::placeholder {
     .suggestion-btn {
         width: 100%;
     }
+}
+
+/* Style for step updates */
+.step-update {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.step-icon {
+    margin-right: 8px;
+}
+
+/* Style for iteration summaries */
+.iteration-summary {
+    margin: 8px 0;
+}
+
+.iteration-summary h4 {
+    margin-top: 0;
+}
+
+/* Style for final results */
+.final-result {
+    margin-top: 0;
+}
+
+.results-content {
+    margin-top: 8px;
+}
+
+.result-item {
+    margin: 4px 0;
+}
+
+/* General message styles */
+.message-content > div {
+    margin: 0;
+    padding: 0;
+}
+
+/* Ensure proper emoji display */
+.step-icon {
+    font-family: "Segoe UI Emoji", "Apple Color Emoji", sans-serif;
+}
+
+/* Override any conflicting styles */
+.message-content p {
+    margin: 0;
+    padding: 0;
+}
+
+/* Ensure proper spacing between messages */
+.message + .message {
+    margin-top: 12px;
 }
