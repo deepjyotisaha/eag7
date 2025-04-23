@@ -35,27 +35,29 @@ class Agent:
         tool_descriptions: str,
         session_id: Optional[str] = None
     ):
-        """Process a query using an existing MCP session"""
         try:
             if not session_id:
                 session_id = f"session-{int(time.time())}"
                 
-            query = user_input  # Store original intent
+            query = user_input
             step = 0
-            
-            # Track reasoning steps
             reasoning_steps = []
             
-            user_interaction.send_update(
+            self.logger.info(f"Processing query: {user_input}")
+            await user_interaction.send_update(
                 session_id=session_id,
                 stage="agent",
                 message=f"Processing query: {user_input}"
             )
             
             while step < max_steps:
+                self.logger.info(f"Step {step + 1} started")
+                
                 # Extract perception
+                self.logger.info("Generating perception...")
                 perception = extract_perception(user_input)
-                user_interaction.send_update(
+                self.logger.info(f"Intent: {perception.intent}, Tool hint: {perception.tool_hint}")
+                await user_interaction.send_update(
                     session_id=session_id,
                     stage="perception",
                     message=f"Intent: {perception.intent}"
@@ -73,7 +75,8 @@ class Agent:
                     top_k=3,
                     session_filter=session_id
                 )
-                user_interaction.send_update(
+                self.logger.info(f"Retrieved {len(retrieved)} memories")
+                await user_interaction.send_update(
                     session_id=session_id,
                     stage="memory",
                     message=f"Retrieved {len(retrieved)} relevant data points"
@@ -91,7 +94,8 @@ class Agent:
                     retrieved,
                     tool_descriptions=tool_descriptions
                 )
-                user_interaction.send_update(
+                self.logger.info(f"Plan generated: {plan}")
+                await user_interaction.send_update(
                     session_id=session_id,
                     stage="plan",
                     message="Generated analysis plan"
@@ -106,9 +110,10 @@ class Agent:
                 # Check for final answer
                 if plan.startswith("FINAL_ANSWER:"):
                     final_result = plan.replace("FINAL_ANSWER:", "").strip()
+                    self.logger.info(f"Final result: {final_result}")
                     
                     # Send iteration summary
-                    user_interaction.send_update(
+                    await user_interaction.send_update(
                         session_id=session_id,
                         stage="reasoning",
                         message="Completed analysis",
@@ -116,11 +121,12 @@ class Agent:
                             "stage": "final",
                             "steps": reasoning_steps,
                             "result": final_result
-                        }
+                        },
+                        llm_manager=self.llm
                     )
                     
                     # Send final result
-                    user_interaction.send_update(
+                    await user_interaction.send_update(
                         session_id=session_id,
                         stage="agent",
                         message=final_result,
@@ -130,16 +136,17 @@ class Agent:
                             "reasoning_steps": reasoning_steps,
                             "confidence": "high"
                         },
-                        query_type="analysis"
+                        query_type="analysis",
+                        llm_manager=self.llm
                     )
                     break
                 
                 # Execute tool
                 try:
                     result = await execute_tool(session, tools, plan)
+                    self.logger.info(f"Tool execution: {result.tool_name} -> {result.result}")
                     
-                    # Send tool execution update
-                    user_interaction.send_update(
+                    await user_interaction.send_update(
                         session_id=session_id,
                         stage="tool",
                         message=f"Using {result.tool_name}",
@@ -148,7 +155,8 @@ class Agent:
                             "tool_name": result.tool_name,
                             "action": result.arguments,
                             "result": result.result
-                        }
+                        },
+                        llm_manager=self.llm
                     )
                     
                     reasoning_steps.append({
@@ -168,18 +176,19 @@ class Agent:
                         session_id=session_id
                     ))
                     
-                    # Update input for next iteration
                     user_input = f"Original task: {query}\nPrevious output: {result.result}\nWhat should I do next?"
                     
                 except Exception as e:
                     error_msg = f"Tool execution failed: {str(e)}"
-                    user_interaction.send_update(
+                    self.logger.error(error_msg)
+                    await user_interaction.send_update(
                         session_id=session_id,
                         stage="error",
                         message=error_msg,
                         is_final=True,
-                        raw_data={"error": error_msg, "steps": reasoning_steps},
-                        query_type="error"
+                        raw_data={"error": str(e), "steps": reasoning_steps},
+                        query_type="error",
+                        llm_manager=self.llm
                     )
                     break
                 
@@ -187,13 +196,15 @@ class Agent:
                 
         except Exception as e:
             error_msg = f"Query processing error: {str(e)}"
-            user_interaction.send_update(
+            self.logger.error(error_msg)
+            await user_interaction.send_update(
                 session_id=session_id,
                 stage="error",
                 message=error_msg,
                 is_final=True,
-                raw_data={"error": error_msg},
-                query_type="error"
+                raw_data={"error": str(e)},
+                query_type="error",
+                llm_manager=self.llm
             )
             raise
             
