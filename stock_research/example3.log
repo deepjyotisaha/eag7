@@ -1,165 +1,329 @@
-2025-04-24 00:40:40,969 - DEBUG -             __init__() Initializing server 'Calculator'
-2025-04-24 00:40:40,970 - DEBUG -            decorator() Registering handler for ListToolsRequest
-2025-04-24 00:40:40,970 - DEBUG -            decorator() Registering handler for CallToolRequest
-2025-04-24 00:40:40,970 - DEBUG -            decorator() Registering handler for ListResourcesRequest
-2025-04-24 00:40:40,970 - DEBUG -            decorator() Registering handler for ReadResourceRequest
-2025-04-24 00:40:40,970 - DEBUG -            decorator() Registering handler for PromptListRequest
-2025-04-24 00:40:40,970 - DEBUG -            decorator() Registering handler for GetPromptRequest
-2025-04-24 00:40:40,970 - DEBUG -            decorator() Registering handler for ListResourceTemplatesRequest
-2025-04-24 00:40:41,009 - DEBUG -             __init__() Using proactor: IocpProactor
-2025-04-24 00:40:41,069 - DEBUG -                  run() Received message: root=InitializedNotification(method='notifications/initialized', params=None, jsonrpc='2.0')
-2025-04-24 00:40:41,070 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EC1A270>
-2025-04-24 00:40:41,070 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:40:41,070 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:40:41,071 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:40:41,075 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EAB7EC0>
-2025-04-24 00:40:41,075 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:40:41,075 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:40:41,075 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:40:42,088 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EE02F90>
-2025-04-24 00:40:42,088 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:40:42,088 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:40:42,089 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:40:43,117 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EE03110>
-2025-04-24 00:40:43,117 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:40:43,117 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:40:43,117 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:40:44,122 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EE872F0>
-2025-04-24 00:40:44,123 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:40:44,123 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:40:44,123 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:40:45,139 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EE97F20>
-2025-04-24 00:40:45,140 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:40:45,140 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:40:45,140 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:40:46,156 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EE4CF80>
-2025-04-24 00:40:46,157 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:40:46,157 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:40:46,157 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:40:47,169 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EE77F50>
-2025-04-24 00:40:47,169 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:40:47,169 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:40:47,170 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:40:48,178 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EE86930>
-2025-04-24 00:40:48,178 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:40:48,178 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:40:48,179 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:40:49,189 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EE03110>
-2025-04-24 00:40:49,189 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:40:49,190 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:40:49,190 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:40:50,206 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EE77C20>
-2025-04-24 00:40:50,206 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:40:50,206 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:40:50,208 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:40:51,221 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EE4CF20>
-2025-04-24 00:40:51,222 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:40:51,222 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:40:51,222 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:40:52,235 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EE4D460>
-2025-04-24 00:40:52,235 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:40:52,236 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:40:52,236 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:40:53,240 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EE97FB0>
-2025-04-24 00:40:53,241 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:40:53,241 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:40:53,241 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:40:54,256 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EE028D0>
-2025-04-24 00:40:54,257 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:40:54,257 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:40:54,257 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:40:58,204 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EE97F80>
-2025-04-24 00:40:58,205 - INFO -      _handle_request() Processing request of type CallToolRequest
-2025-04-24 00:40:58,205 - DEBUG -      _handle_request() Dispatching request of type CallToolRequest
-2025-04-24 00:40:58,419 - DEBUG -            _new_conn() Starting new HTTP connection (1): localhost:11434
-2025-04-24 00:41:00,512 - DEBUG -        _make_request() http://localhost:11434 "POST /api/embeddings HTTP/1.1" 200 None
-2025-04-24 00:41:00,523 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:41:00,523 - INFO -      _handle_message() Warning: PydanticDeprecatedSince211: Accessing the 'model_fields' attribute on the instance is deprecated. Instead, you should access this attribute from the model class. Deprecated in Pydantic V2.11 to be removed in V3.0.
-2025-04-24 00:41:14,654 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EE4D2B0>
-2025-04-24 00:41:14,654 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:41:14,654 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:41:14,655 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:41:15,669 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355BF0DB20>
-2025-04-24 00:41:15,669 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:41:15,670 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:41:15,671 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:41:16,681 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EE76810>
-2025-04-24 00:41:16,682 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:41:16,682 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:41:16,682 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:41:17,696 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EEAF470>
-2025-04-24 00:41:17,696 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:41:17,697 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:41:17,697 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:41:18,707 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355ED90800>
-2025-04-24 00:41:18,708 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:41:18,709 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:41:18,709 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:41:19,720 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EEE9250>
-2025-04-24 00:41:19,720 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:41:19,720 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:41:19,721 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:41:20,733 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EE03110>
-2025-04-24 00:41:20,733 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:41:20,734 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:41:20,734 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:41:21,743 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EE4D5E0>
-2025-04-24 00:41:21,744 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:41:21,744 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:41:21,745 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:41:22,751 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EEE8830>
-2025-04-24 00:41:22,751 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:41:22,751 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:41:22,752 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:41:23,772 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EEAEFF0>
-2025-04-24 00:41:23,772 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:41:23,772 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:41:23,773 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:41:24,782 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EE4D5E0>
-2025-04-24 00:41:24,783 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:41:24,783 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:41:24,783 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:41:25,800 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EE77A10>
-2025-04-24 00:41:25,800 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:41:25,800 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:41:25,801 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:41:26,814 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EEAD010>
-2025-04-24 00:41:26,814 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:41:26,815 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:41:26,815 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:41:27,828 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EE02570>
-2025-04-24 00:41:27,829 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:41:27,829 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:41:27,830 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:41:28,839 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EE77500>
-2025-04-24 00:41:28,839 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:41:28,839 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:41:28,840 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:41:29,851 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EEE8D10>
-2025-04-24 00:41:29,851 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:41:29,852 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:41:29,852 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:41:30,863 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355ED90440>
-2025-04-24 00:41:30,864 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:41:30,864 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:41:30,864 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:41:31,876 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EC1BD40>
-2025-04-24 00:41:31,876 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:41:31,876 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:41:31,877 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:41:32,888 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EE77860>
-2025-04-24 00:41:32,888 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:41:32,888 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:41:32,889 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:41:33,894 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355ED90590>
-2025-04-24 00:41:33,895 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:41:33,895 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:41:33,895 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:41:34,912 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EE4CCB0>
-2025-04-24 00:41:34,912 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:41:34,912 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:41:34,914 - DEBUG -      _handle_request() Response sent
-2025-04-24 00:41:35,925 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x000002355EC1BD40>
-2025-04-24 00:41:35,926 - INFO -      _handle_request() Processing request of type ListToolsRequest
-2025-04-24 00:41:35,926 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
-2025-04-24 00:41:35,927 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:19:13,490 - DEBUG -             __init__() Initializing server 'Calculator'
+2025-04-24 01:19:13,490 - DEBUG -            decorator() Registering handler for ListToolsRequest
+2025-04-24 01:19:13,490 - DEBUG -            decorator() Registering handler for CallToolRequest
+2025-04-24 01:19:13,490 - DEBUG -            decorator() Registering handler for ListResourcesRequest
+2025-04-24 01:19:13,490 - DEBUG -            decorator() Registering handler for ReadResourceRequest
+2025-04-24 01:19:13,491 - DEBUG -            decorator() Registering handler for PromptListRequest
+2025-04-24 01:19:13,491 - DEBUG -            decorator() Registering handler for GetPromptRequest
+2025-04-24 01:19:13,491 - DEBUG -            decorator() Registering handler for ListResourceTemplatesRequest
+2025-04-24 01:19:13,569 - DEBUG -             __init__() Using proactor: IocpProactor
+2025-04-24 01:19:13,672 - DEBUG -                  run() Received message: root=InitializedNotification(method='notifications/initialized', params=None, jsonrpc='2.0')
+2025-04-24 01:19:13,674 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D6A68D0>
+2025-04-24 01:19:13,674 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:19:13,674 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:19:13,676 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:19:13,682 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D6A6D80>
+2025-04-24 01:19:13,683 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:19:13,683 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:19:13,684 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:19:14,700 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D6391F0>
+2025-04-24 01:19:14,701 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:19:14,701 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:19:14,702 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:19:15,712 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D6A6E40>
+2025-04-24 01:19:15,713 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:19:15,713 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:19:15,714 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:19:16,729 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D7354F0>
+2025-04-24 01:19:16,730 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:19:16,730 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:19:16,731 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:19:17,741 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D735670>
+2025-04-24 01:19:17,742 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:19:17,742 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:19:17,742 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:19:18,752 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D6ECD10>
+2025-04-24 01:19:18,753 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:19:18,753 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:19:18,754 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:19:19,768 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D6A6E40>
+2025-04-24 01:19:19,769 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:19:19,769 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:19:19,770 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:19:20,783 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D747FE0>
+2025-04-24 01:19:20,783 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:19:20,783 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:19:20,783 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:19:21,796 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D639190>
+2025-04-24 01:19:21,797 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:19:21,797 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:19:21,798 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:19:25,819 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5BFDA1E0>
+2025-04-24 01:19:25,819 - INFO -      _handle_request() Processing request of type CallToolRequest
+2025-04-24 01:19:25,819 - DEBUG -      _handle_request() Dispatching request of type CallToolRequest
+2025-04-24 01:19:25,974 - DEBUG -            _new_conn() Starting new HTTP connection (1): localhost:11434
+2025-04-24 01:19:28,089 - DEBUG -        _make_request() http://localhost:11434 "POST /api/embeddings HTTP/1.1" 200 None
+2025-04-24 01:19:28,098 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:19:28,098 - INFO -      _handle_message() Warning: PydanticDeprecatedSince211: Accessing the 'model_fields' attribute on the instance is deprecated. Instead, you should access this attribute from the model class. Deprecated in Pydantic V2.11 to be removed in V3.0.
+2025-04-24 01:19:53,256 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D747FB0>
+2025-04-24 01:19:53,257 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:19:53,257 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:19:53,258 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:19:54,261 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5A76DA30>
+2025-04-24 01:19:54,261 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:19:54,261 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:19:54,261 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:19:55,278 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D4CE390>
+2025-04-24 01:19:55,278 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:19:55,278 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:19:55,279 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:19:56,294 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D7243B0>
+2025-04-24 01:19:56,295 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:19:56,295 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:19:56,295 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:19:57,302 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D6ED460>
+2025-04-24 01:19:57,302 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:19:57,302 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:19:57,302 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:19:58,310 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5A76DA30>
+2025-04-24 01:19:58,310 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:19:58,310 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:19:58,311 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:19:59,319 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D6391F0>
+2025-04-24 01:19:59,319 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:19:59,319 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:19:59,320 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:00,337 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5BFDA1E0>
+2025-04-24 01:20:00,337 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:00,337 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:00,338 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:01,354 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D747DA0>
+2025-04-24 01:20:01,354 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:01,354 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:01,355 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:02,368 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5C11AAE0>
+2025-04-24 01:20:02,368 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:02,369 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:02,369 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:03,379 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5A76DA30>
+2025-04-24 01:20:03,379 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:03,379 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:03,380 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:04,395 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D747E60>
+2025-04-24 01:20:04,395 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:04,395 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:04,396 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:05,409 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D725280>
+2025-04-24 01:20:05,409 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:05,409 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:05,410 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:06,424 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D6ED460>
+2025-04-24 01:20:06,424 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:06,424 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:06,425 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:07,441 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D638350>
+2025-04-24 01:20:07,441 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:07,441 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:07,441 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:08,458 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D78D6A0>
+2025-04-24 01:20:08,458 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:08,458 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:08,459 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:09,474 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D6ED670>
+2025-04-24 01:20:09,474 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:09,474 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:09,475 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:10,485 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5BFDA1E0>
+2025-04-24 01:20:10,485 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:10,485 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:10,486 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:11,501 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D79CFE0>
+2025-04-24 01:20:11,501 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:11,502 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:11,502 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:12,508 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D79D0D0>
+2025-04-24 01:20:12,509 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:12,509 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:12,509 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:13,518 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D78CB90>
+2025-04-24 01:20:13,518 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:13,518 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:13,519 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:14,532 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D734AD0>
+2025-04-24 01:20:14,532 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:14,532 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:14,533 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:15,546 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D747D70>
+2025-04-24 01:20:15,546 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:15,546 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:15,546 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:16,564 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D6ED7C0>
+2025-04-24 01:20:16,564 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:16,564 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:16,565 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:17,581 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5B8B8C80>
+2025-04-24 01:20:17,581 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:17,581 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:17,582 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:18,595 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D734D10>
+2025-04-24 01:20:18,596 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:18,596 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:18,596 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:19,602 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D3CFFE0>
+2025-04-24 01:20:19,602 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:19,602 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:19,603 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:20,606 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D638200>
+2025-04-24 01:20:20,606 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:20,606 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:20,607 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:21,619 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D6A6E40>
+2025-04-24 01:20:21,619 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:21,619 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:21,620 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:22,631 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D4CE390>
+2025-04-24 01:20:22,632 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:22,632 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:22,633 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:23,643 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D6ED280>
+2025-04-24 01:20:23,643 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:23,643 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:23,644 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:24,653 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D79C350>
+2025-04-24 01:20:24,654 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:24,655 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:24,655 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:25,671 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D747DA0>
+2025-04-24 01:20:25,671 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:25,672 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:25,672 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:26,685 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D6ED040>
+2025-04-24 01:20:26,685 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:26,685 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:26,686 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:27,703 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D79C350>
+2025-04-24 01:20:27,703 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:27,703 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:27,704 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:28,713 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D78CEF0>
+2025-04-24 01:20:28,713 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:28,713 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:28,714 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:29,728 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D6ECB30>
+2025-04-24 01:20:29,729 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:29,729 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:29,729 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:30,743 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D6391F0>
+2025-04-24 01:20:30,743 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:30,743 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:30,743 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:31,749 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5B8B8C80>
+2025-04-24 01:20:31,751 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:31,751 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:31,751 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:32,762 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D747E00>
+2025-04-24 01:20:32,764 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:32,764 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:32,764 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:33,779 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D78CFB0>
+2025-04-24 01:20:33,779 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:33,779 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:33,781 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:34,791 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D726240>
+2025-04-24 01:20:34,792 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:34,792 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:34,792 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:35,802 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D78E300>
+2025-04-24 01:20:35,802 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:35,802 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:35,802 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:36,818 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D7350D0>
+2025-04-24 01:20:36,818 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:36,818 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:36,819 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:37,821 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D747F80>
+2025-04-24 01:20:37,821 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:37,823 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:37,823 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:38,834 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D734BF0>
+2025-04-24 01:20:38,834 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:38,834 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:38,835 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:39,852 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D6A6F00>
+2025-04-24 01:20:39,852 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:39,852 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:39,853 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:40,858 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D6ECB30>
+2025-04-24 01:20:40,858 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:40,858 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:40,859 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:41,871 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D725A30>
+2025-04-24 01:20:41,871 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:41,871 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:41,872 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:42,889 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D747F80>
+2025-04-24 01:20:42,889 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:42,889 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:42,890 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:43,901 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D79CFE0>
+2025-04-24 01:20:43,901 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:43,902 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:43,902 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:44,917 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D4CE9F0>
+2025-04-24 01:20:44,917 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:44,917 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:44,918 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:45,923 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D747DD0>
+2025-04-24 01:20:45,923 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:45,923 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:45,924 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:46,940 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D6A6E40>
+2025-04-24 01:20:46,940 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:46,940 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:46,941 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:47,951 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D78E300>
+2025-04-24 01:20:47,951 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:47,952 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:47,952 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:48,962 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D4CE390>
+2025-04-24 01:20:48,963 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:48,963 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:48,963 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:49,968 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D638050>
+2025-04-24 01:20:49,968 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:49,968 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:49,969 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:50,973 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D734D10>
+2025-04-24 01:20:50,973 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:50,973 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:50,974 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:51,988 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D747DA0>
+2025-04-24 01:20:51,989 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:51,989 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:51,989 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:53,002 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D638230>
+2025-04-24 01:20:53,002 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:53,002 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:53,003 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:54,015 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D6ECB90>
+2025-04-24 01:20:54,017 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:54,017 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:54,017 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:55,023 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D7272C0>
+2025-04-24 01:20:55,023 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:55,023 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:55,023 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:56,028 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D4CC950>
+2025-04-24 01:20:56,029 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:56,029 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:56,029 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:57,045 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5C11AAE0>
+2025-04-24 01:20:57,045 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:57,045 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:57,045 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:58,064 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D724BF0>
+2025-04-24 01:20:58,065 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:58,065 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:58,065 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:20:59,078 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D79CFE0>
+2025-04-24 01:20:59,078 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:20:59,078 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:20:59,078 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:21:00,082 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D747F80>
+2025-04-24 01:21:00,082 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:21:00,083 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:21:00,083 - DEBUG -      _handle_request() Response sent
+2025-04-24 01:21:01,101 - DEBUG -                  run() Received message: <mcp.shared.session.RequestResponder object at 0x0000013C5D638290>
+2025-04-24 01:21:01,102 - INFO -      _handle_request() Processing request of type ListToolsRequest
+2025-04-24 01:21:01,103 - DEBUG -      _handle_request() Dispatching request of type ListToolsRequest
+2025-04-24 01:21:01,103 - DEBUG -      _handle_request() Response sent

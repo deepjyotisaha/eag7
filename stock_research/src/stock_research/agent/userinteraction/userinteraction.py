@@ -109,26 +109,33 @@ class UserInteraction:
         - Action: {iteration_data.get('action', 'unknown')}
         - Result: {iteration_data.get('result', 'No result available')}
 
-        Format the response in clear, readable bullet points.
-        Keep it concise (3-4 bullet points maximum).
+        Format your response with:
+        1. A clear one-sentence overview of what was done
+        2. 2-3 bullet points with key details
+        3. Use this exact HTML format for bullet points:
+        <ul style="margin: 15px 0; padding-left: 20px;">
+            <li style="margin-bottom: 8px;">Point here</li>
+        </ul>
         """
 
         try:
             summary = await UserInteraction._generate_llm_response(llm_manager, prompt)
             if not summary:
                 summary = f"""
-                • Step: {iteration_data.get('stage', 'unknown')}
-                • Action: Used {iteration_data.get('tool_name', 'tool')} to {iteration_data.get('action', 'analyze data')}
-                • Result: {iteration_data.get('result', 'No result available')}
+                <p>Step: {iteration_data.get('stage', 'unknown')}</p>
+                <ul style="margin: 15px 0; padding-left: 20px;">
+                    <li style="margin-bottom: 8px;">Action: Used {iteration_data.get('tool_name', 'tool')} to {iteration_data.get('action', 'analyze data')}</li>
+                    <li style="margin-bottom: 8px;">Result: {iteration_data.get('result', 'No result available')}</li>
+                </ul>
                 """
 
             content = f"""
-            <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: flex; flex-direction: column; gap: 12px;">
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 16px;">📊</span>
-                    <h4 style="margin: 0; font-size: 16px; color: black;">Analysis Step Summary</h4>
+                    <span style="font-size: 18px;">📊</span>
+                    <h3 style="margin: 0; font-size: 18px; color: black;">Analysis Step Summary</h3>
                 </div>
-                <div style="line-height: 1.5; color: black;">{summary}</div>
+                <div style="line-height: 1.6; color: black;">{summary}</div>
             </div>
             """
 
@@ -159,9 +166,12 @@ class UserInteraction:
         2. Present 2-3 key points or insights
         3. If relevant, include any important numbers or metrics
         4. If applicable, end with a brief recommendation or next steps
-        5. Use bullet points for clarity
+        5. Always use bullet points for clarity
         6. Keep the entire response under 200 words
         7. Make it easy to read and understand for non-technical users
+        8. Inject HTML tags to make the response more readable.
+        9. Include a table of the data if relevant.
+        10.Inlclude a header which says "Final Results"
         """
 
         try:

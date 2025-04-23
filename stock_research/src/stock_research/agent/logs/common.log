@@ -1,4 +1,4 @@
-2025-04-24 00:40:41,105 - INFO - _internal:_log:97 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+2025-04-24 01:19:13,743 - INFO - _internal:_log:97 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
  * Running on http://127.0.0.1:5000
-2025-04-24 00:40:41,105 - INFO - _internal:_log:97 - [33mPress CTRL+C to quit[0m
-2025-04-24 00:40:55,219 - INFO - _internal:_log:97 - 127.0.0.1 - - [24/Apr/2025 00:40:55] "GET /query?message=How%20much%20Anmol%20singh%20paid%20for%20his%20DLF%20apartment%20via%20Capbridge? HTTP/1.1" 200 -
+2025-04-24 01:19:13,744 - INFO - _internal:_log:97 - [33mPress CTRL+C to quit[0m
+2025-04-24 01:19:22,016 - INFO - _internal:_log:97 - 127.0.0.1 - - [24/Apr/2025 01:19:22] "GET /query?message=How%20much%20Anmol%20singh%20paid%20for%20his%20DLF%20apartment%20via%20Capbridge? HTTP/1.1" 200 -
