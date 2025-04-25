@@ -4,8 +4,6 @@ An AI-powered stock research assistant that combines a Chrome extension interfac
 
 ## Features
 
-- **AI-Powered Analysis**: Utilizes advanced AI models for stock research and analysis
-- **Real-time Processing**: Live updates and real-time data analysis
 - **Chrome Extension Interface**: Convenient side panel for easy access
 - **Document Search**: RAG (Retrieval-Augmented Generation) based search for relevant stock information
 - **Interactive Queries**: Natural language processing for stock-related questions
