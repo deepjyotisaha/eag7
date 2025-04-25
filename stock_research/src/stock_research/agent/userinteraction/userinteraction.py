@@ -4,6 +4,7 @@ from ..llm.llm import LLMManager
 import json
 import asyncio
 from functools import partial
+import google.generativeai as genai
 
 class UserInteraction:
     # Common HTML template for all updates
@@ -224,5 +225,41 @@ class UserInteraction:
             error_msg = f"Error sending update: {str(e)}"
             message_broker.send_update(session_id, error_msg, "error")
 
-# Global instance
+
+    @staticmethod
+    async def send_introductory_message(tools_description: str) -> str:
+        """
+        Creates a friendly introduction message summarizing the agent's capabilities based on available tools.
+        
+        Args:
+            tools_description: String containing descriptions of all available tools
+            
+        Returns:
+            str: A friendly introduction message with capabilities summary
+        """
+        prompt = f"""
+        Given these available tools and their descriptions:
+        {tools_description}
+
+        Create a friendly, one-sentence introduction that summarizes the key capabilities. 
+        The introduction should:
+        1. Start with "I am your AI assistant"
+        2. Group similar tools together (e.g., math operations, email functions)
+        3. Focus on high-level capabilities rather than listing specific functions
+        4. Be concise but informative
+        5. Use natural, friendly language
+
+        Example format:
+        "I am your AI assistant capable of [main capability 1], [main capability 2], and [main capability 3]."
+        """
+
+        llm = LLMManager()
+        response = await llm.generate_content(prompt)
+        
+        # Combine with tools list for complete introduction
+        full_intro = f"{response.text}\n\nHere are all the tools I can use:\n{tools_description}"
+        
+        return full_intro
+
+
 user_interaction = UserInteraction()

@@ -18,16 +18,22 @@ def extract_stock_symbol(query: str) -> str:
 # Initialize services at startup instead of before_first_request
 def initialize_services():
     """Initialize services"""
-    # Start MCP server
-    mcp_server.start()
-    
-    # Wait for initialization
-    if not mcp_server.wait_for_initialization():
-        app.logger.error("Failed to initialize MCP server")
-        return
-    
-    # Log available tools
-    app.logger.info(mcp_server.get_tools_description())
+    try:
+        # Start MCP server
+        mcp_server.start()
+        
+        # Wait for initialization with increased timeout
+        if not mcp_server.wait_for_initialization(timeout=120):
+            app.logger.error("Failed to initialize MCP server: Timeout after 120 seconds")
+            return
+        
+        # Log available tools
+        tools_desc = mcp_server.get_tools_description()
+        app.logger.info("MCP Server initialized successfully")
+        app.logger.info(f"Available tools:\n{tools_desc}")
+        
+    except Exception as e:
+        app.logger.error(f"Failed to initialize services: {str(e)}")
 
 # Initialize services when the module is imported
 initialize_services()
@@ -37,7 +43,7 @@ def status():
     """Get server status and available tools"""
     return {
         "status": "ready" if mcp_server.initialized else "initializing",
-        "tools": mcp_server.get_tools_description()
+        "tools": " 1. Analyze financial reports and provide insights and information about the company. 2. Perform basic math operations. 3. Send emails"
     }
 
 @app.route('/query')
