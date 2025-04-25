@@ -2,6 +2,8 @@
 
 An AI-powered stock research assistant that combines a Chrome extension interface with a powerful backend for real-time stock analysis and insights. This tool helps investors and analysts make informed decisions by providing AI-powered analysis of stocks and market data.
 
+[](screenshot.png)
+
 ## Features
 
 - **Chrome Extension Interface**: Convenient side panel for easy access
@@ -14,6 +16,7 @@ An AI-powered stock research assistant that combines a Chrome extension interfac
 ## System Requirements
 
 - Python 3.12 or higher
+- UV package manager
 - Google Chrome browser
 - Ollama (for embeddings)
 - Windows/Linux/MacOS
@@ -29,15 +32,6 @@ An AI-powered stock research assistant that combines a Chrome extension interfac
 git clone <repository-url>
 cd stock-research
 
-# Create and activate virtual environment
-python -m venv .venv
-# On Windows
-.venv\Scripts\activate
-# On Unix/MacOS
-source .venv/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
 ```
 
 ### 2. Ollama Setup
@@ -48,7 +42,19 @@ pip install -r requirements.txt
 ollama pull nomic-embed-text
 ```
 
-### 3. Chrome Extension Setup
+### 3. Environment Configuration
+   ```bash
+   # Create .env file with:
+   GOOGLE_API_KEY=your_gemini_api_key_here
+   ```
+
+### 4. Gmail Configuration
+   - Create `.google` directory in project root
+   - Add Gmail API credentials in `.google/client_creds.json`
+   - Configure app tokens in `.google/app_tokens.json`
+   - Refer: https://github.com/jasonsum/gmail-mcp-server/blob/main/README.md
+
+### 5. Chrome Extension Setup
 
 1. Open Chrome and navigate to `chrome://extensions/`
 2. Enable "Developer mode" in the top right
@@ -73,6 +79,7 @@ ollama pull nomic-embed-text
    - Handles email-based notifications
    - Manages email communications
    - Supports automated reporting
+   - Credit: https://github.com/jasonsum/gmail-mcp-server/blob/main/README.md
 
 ### Components
 
@@ -87,70 +94,21 @@ ollama pull nomic-embed-text
 
 1. Start the backend server:
 ```bash
-python main.py
+uv run main.py
 ```
 
-2. The Chrome extension page will open automatically
+2. Open the chrome extension
 3. Click the extension icon to open the side panel
 
 ### Making Queries
 
-1. **Basic Stock Analysis**:
-   - Enter a stock symbol or company name
-   - Ask for specific metrics or analysis
-   - Example: "Analyze AAPL's recent performance"
-
-2. **Comparative Analysis**:
-   - Compare multiple stocks
-   - Analyze industry trends
-   - Example: "Compare AAPL and MSFT's P/E ratios"
-
-3. **Document Search**:
-   - Search through research documents
-   - Find specific information
-   - Example: "Find information about Tesla's battery technology"
-
-4. **Financial Calculations**:
-   - Perform complex financial calculations
-   - Analyze ratios and metrics
-   - Example: "Calculate AAPL's current ratio"
+- 
 
 ### Real-time Updates
 
 - Progress indicators show analysis status
 - Live updates as new information is processed
 - Interactive results that can be expanded for details
-
-## Capabilities
-
-### Stock Analysis
-- Price analysis
-- Volume analysis
-- Technical indicators
-- Fundamental analysis
-- Historical performance
-- Peer comparison
-
-### Document Processing
-- Automatic document indexing
-- Semantic search
-- Relevance scoring
-- Source tracking
-- Context-aware results
-
-### Mathematical Operations
-- Financial ratios
-- Statistical analysis
-- Trend analysis
-- Risk calculations
-- Portfolio metrics
-
-### Integration Features
-- Email notifications
-- Report generation
-- Data export
-- Custom alerts
-- Scheduled analysis
 
 ## Project Structure
 
@@ -184,30 +142,10 @@ Place documents in the `agent/mcp_server/rag/documents` directory. The system wi
 - Generate embeddings
 - Update the FAISS index
 
-## Troubleshooting
-
-1. **Timeout Errors**:
-   - Check if Ollama is running
-   - Verify document index size
-   - Increase timeout settings if needed
-
-2. **Extension Issues**:
-   - Ensure backend server is running
-   - Check Chrome extension permissions
-   - Verify WebSocket connection
-
-3. **Search Issues**:
-   - Verify document indexing
-   - Check Ollama embedding service
-   - Review RAG server logs
 
 ## Demo Video
 
 [Coming Soon]
-- Installation walkthrough
-- Basic usage demonstration
-- Advanced features showcase
-- Troubleshooting guide
 
 ## License
 
