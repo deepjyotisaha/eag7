@@ -47,7 +47,9 @@ class StockResearchAssistant {
             if (data.status === 'ready') {
                 this.statusIndicator.textContent = 'Online';
                 this.statusIndicator.className = 'status online';
-                this.addMessage('I am ready to help! Here are the tools I can use:\n' + data.tools, 'assistant');
+                if (data.html) {
+                    this.addMessage(data.html, 'assistant');
+                }
                 this.enableInput();
             } else {
                 this.statusIndicator.textContent = 'Initializing...';

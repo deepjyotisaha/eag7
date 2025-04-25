@@ -8,6 +8,9 @@ import os
 from queue import Queue
 from concurrent.futures import Future
 from pathlib import Path
+from ..agent.userinteraction import userinteraction
+from .message_broker import message_broker
+from ..agent import agent
 
 class MCPServerManager:
     _instance = None
@@ -121,7 +124,8 @@ class MCPServerManager:
                                         while not self._command_queues[server_name].empty():
                                             cmd, future = self._command_queues[server_name].get_nowait()
                                             try:
-                                                result = await asyncio.wait_for(cmd(session), timeout=30.0)
+                                                # Increase timeout to 120 seconds for long-running operations
+                                                result = await asyncio.wait_for(cmd(session), timeout=120.0)
                                                 future.set_result(result)
                                             except Exception as e:
                                                 future.set_exception(e)
@@ -237,12 +241,44 @@ class MCPServerManager:
 # Global instance
 mcp_server = MCPServerManager()
 
-async def process_agent_query(session: ClientSession, query: str):
-    """Process a query using the global agent instance"""
-    await agent.process_query(
-        session=session,
-        user_input=query,
-        tools=mcp_server.tools,
-        tool_descriptions=mcp_server.tool_descriptions,
-        session_id=f"stock-{int(time.time())}"
-    )
+async def process_agent_query(session_id: str, query: str):
+    """Process a query using the agent instance"""
+    try:
+        if not mcp_server.initialized:
+            await userinteraction.send_update(
+                session_id=session_id,
+                stage="agent",
+                message="Waiting for server initialization..."
+            )
+            if not mcp_server.wait_for_initialization():
+                raise Exception("Server initialization timeout")
+
+        try:
+            # Get the RAG session since it's the main processing server
+            rag_session = mcp_server.get_session('rag')
+            if not rag_session:
+                raise Exception("Could not get RAG session")
+
+            # Process directly with the session
+            await agent.process_query(
+                session=rag_session,
+                user_input=query,
+                tools=mcp_server.servers['rag']['tools'],
+                tool_descriptions=mcp_server.get_tools_description(),
+                session_id=session_id
+            )
+            
+        except Exception as e:
+            error_msg = f"Error during analysis: {str(e)}"
+            print(error_msg)
+            await userinteraction.send_update(
+                session_id=session_id,
+                stage="error",
+                message=error_msg,
+                is_final=True,
+                raw_data={"error": str(e)},
+                query_type="error"
+            )
+            
+    finally:
+        message_broker.close_session(session_id)

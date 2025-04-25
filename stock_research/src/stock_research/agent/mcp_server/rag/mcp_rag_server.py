@@ -20,7 +20,7 @@ import hashlib
 import logging
 
 logging.basicConfig(
-    level=logging.ERROR,
+    level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(funcName)20s() %(message)s',
         handlers=[
         logging.FileHandler('mcp_rag_server.log', mode='w'),
@@ -37,9 +37,22 @@ CHUNK_OVERLAP = 40
 ROOT = Path(__file__).parent.resolve()
 
 def get_embedding(text: str) -> np.ndarray:
-    response = requests.post(EMBED_URL, json={"model": EMBED_MODEL, "prompt": text})
-    response.raise_for_status()
-    return np.array(response.json()["embedding"], dtype=np.float32)
+    try:
+        mcp_log("INFO", "Requesting embedding from Ollama service")
+        response = requests.post(EMBED_URL, json={"model": EMBED_MODEL, "prompt": text}, timeout=30)
+        response.raise_for_status()
+        embedding = response.json()["embedding"]
+        mcp_log("INFO", f"Got embedding of dimension {len(embedding)}")
+        return np.array(embedding, dtype=np.float32)
+    except requests.exceptions.ConnectionError:
+        mcp_log("ERROR", f"Could not connect to embedding service at {EMBED_URL}. Is Ollama running?")
+        raise
+    except requests.exceptions.Timeout:
+        mcp_log("ERROR", "Embedding request timed out")
+        raise
+    except Exception as e:
+        mcp_log("ERROR", f"Error getting embedding: {str(e)}")
+        raise
 
 def chunk_text(text, size=CHUNK_SIZE, overlap=CHUNK_OVERLAP):
     words = text.split()
@@ -57,16 +70,41 @@ def search_documents(query: str) -> list[str]:
     ensure_faiss_ready()
     mcp_log("SEARCH", f"Query: {query}")
     try:
-        index = faiss.read_index(str(ROOT  / "faiss_index" / "index.bin"))
-        metadata = json.loads((ROOT /  "faiss_index" / "metadata.json").read_text())
+        # Add timing information
+        start_time = time.time()
+        
+        index_path = str(ROOT / "faiss_index" / "index.bin")
+        metadata_path = ROOT / "faiss_index" / "metadata.json"
+        
+        mcp_log("INFO", f"Loading FAISS index from: {index_path}")
+        index = faiss.read_index(index_path)
+        mcp_log("INFO", f"FAISS index loaded with {index.ntotal} vectors")
+        
+        mcp_log("INFO", f"Loading metadata from: {metadata_path}")
+        metadata = json.loads(metadata_path.read_text())
+        mcp_log("INFO", f"Metadata loaded with {len(metadata)} entries")
+        
+        mcp_log("INFO", "Generating embedding for query")
         query_vec = get_embedding(query).reshape(1, -1)
+        
+        mcp_log("INFO", "Performing FAISS search")
         D, I = index.search(query_vec, k=5)
+        
         results = []
-        for idx in I[0]:
+        for i, idx in enumerate(I[0]):
             data = metadata[idx]
-            results.append(f"{data['chunk']}\n[Source: {data['doc']}, ID: {data['chunk_id']}]")
+            result = f"{data['chunk']}\n[Source: {data['doc']}, ID: {data['chunk_id']}]"
+            mcp_log("INFO", f"Result {i+1} from document: {data['doc']}, distance: {D[0][i]:.4f}")
+            results.append(result)
+        
+        elapsed = time.time() - start_time
+        mcp_log("INFO", f"Search completed in {elapsed:.2f} seconds with {len(results)} results")
         return results
+        
     except Exception as e:
+        mcp_log("ERROR", f"Search failed: {str(e)}")
+        import traceback
+        mcp_log("ERROR", f"Traceback:\n{traceback.format_exc()}")
         return [f"ERROR: Failed to search: {str(e)}"]
 
 
