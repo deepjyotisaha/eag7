@@ -19,10 +19,10 @@ def setup_logging(module_name: str):
     log_format = '%(asctime)s - %(levelname)s - %(module)s:%(funcName)s:%(lineno)d - %(message)s'
     
     logging.basicConfig(
-        level=logging.ERROR,
+        level=logging.DEBUG,
         format=log_format,
         handlers=[
-            logging.FileHandler(log_file, mode='w'),
+            logging.FileHandler(log_file, mode='w', encoding='utf-8'),
             logging.StreamHandler(sys.stdout)
         ]
     )

@@ -13,10 +13,10 @@ from ..backend.message_broker import message_broker
 from .llm.llm import LLMManager
 from .config.log_config import setup_logging
 
-def log(stage: str, msg: str):
-    """Simple console logging function"""
-    now = datetime.datetime.now().strftime("%H:%M:%S")
-    print(f"[{now}] [{stage}] {msg}")
+#def log(stage: str, msg: str):
+#    """Simple console logging function"""
+#    now = datetime.datetime.now().strftime("%H:%M:%S")
+#    print(f"[{now}] [{stage}] {msg}")
 
 max_steps = 10
 
@@ -44,6 +44,7 @@ class Agent:
             reasoning_steps = []
             
             self.logger.info(f"Processing query: {user_input}")
+            
             await user_interaction.send_update(
                 session_id=session_id,
                 stage="agent",
@@ -56,7 +57,7 @@ class Agent:
                 # Extract perception
                 self.logger.info("Generating perception...")
                 perception = extract_perception(user_input)
-                self.logger.info(f"Intent: {perception.intent}, Tool hint: {perception.tool_hint}")
+                self.logger.info(f"Intent: {perception.intent}, Tool hint: {perception.tool_hint}, Entities: {perception.entities}")
                 await user_interaction.send_update(
                     session_id=session_id,
                     stage="perception",
@@ -81,6 +82,8 @@ class Agent:
                     stage="memory",
                     message=f"Retrieved {len(retrieved)} relevant data points"
                 )
+
+                self.logger.info("Retrieved memories Content: %s", retrieved)
                 
                 reasoning_steps.append({
                     "stage": "memory",
@@ -89,6 +92,10 @@ class Agent:
                 })
                 
                 # Generate plan
+                self.logger.info("Generating plan...")
+                #self.logger.info("Perception: %s", perception)
+                #self.logger.info("Retrieved: %s", retrieved)
+                #self.logger.info("Tool descriptions: %s", tool_descriptions)
                 plan = generate_plan(
                     perception,
                     retrieved,
@@ -143,6 +150,7 @@ class Agent:
                 
                 # Execute tool
                 try:
+                    self.logger.info("Executing tool...")
                     result = await execute_tool(session, tools, plan)
                     self.logger.info(f"Tool execution: {result.tool_name} -> {result.result}")
                     
@@ -165,7 +173,8 @@ class Agent:
                         "action": result.arguments,
                         "result": result.result
                     })
-                    
+                    self.logger.info("Adding details in memory")
+
                     # Store result in memory
                     self.memory.add(MemoryItem(
                         text=f"Tool call: {result.tool_name} with {result.arguments}, got: {result.result}",
@@ -219,11 +228,13 @@ async def main(user_input: str):
     """
     Legacy entry point - prints warning and exits
     """
-    log("warning", "Direct agent execution is deprecated. Please use the Agent class through the server manager.")
+    logger = setup_logging(__name__)
+    logger.warning("warning", "Direct agent execution is deprecated. Please use the Agent class through the server manager.")
     return
 
 if __name__ == "__main__":
-    log("warning", "Direct script execution is deprecated. Please start the Flask server instead.")
+    logger = setup_logging(__name__)
+    logger.warning("warning", "Direct script execution is deprecated. Please start the Flask server instead.")
 
 # Find the ASCII values of characters in INDIA and then return sum of exponentials of those values.
 # How much Anmol singh paid for his DLF apartment via Capbridge? 

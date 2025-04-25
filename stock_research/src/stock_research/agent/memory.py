@@ -6,7 +6,9 @@ import requests
 from typing import List, Optional, Literal
 from pydantic import BaseModel
 from datetime import datetime
+from .config.log_config import setup_logging
 
+logger = setup_logging(__name__)
 
 class MemoryItem(BaseModel):
     text: str
@@ -27,15 +29,19 @@ class MemoryManager:
         self.embeddings: List[np.ndarray] = []
 
     def _get_embedding(self, text: str) -> np.ndarray:
+        logger.info("Getting embedding for text: %s", text)
         response = requests.post(
             self.embedding_model_url,
             json={"model": self.model_name, "prompt": text}
         )
         response.raise_for_status()
+        logger.info("Embedding response: %s", response.json())
         return np.array(response.json()["embedding"], dtype=np.float32)
 
     def add(self, item: MemoryItem):
+        logger.info("Adding item to memory: %s", item)
         emb = self._get_embedding(item.text)
+        logger.info("Embedding: %s", emb)
         self.embeddings.append(emb)
         self.data.append(item)
 
@@ -43,6 +49,7 @@ class MemoryManager:
         if self.index is None:
             self.index = faiss.IndexFlatL2(len(emb))
         self.index.add(np.stack([emb]))
+        logger.info("Item added to memory")
 
     def retrieve(
         self,
@@ -52,6 +59,8 @@ class MemoryManager:
         tag_filter: Optional[List[str]] = None,
         session_filter: Optional[str] = None
     ) -> List[MemoryItem]:
+    
+        logger.info("Retrieving items from memory for query: %s", query)
         if not self.index or len(self.data) == 0:
             return []
 
@@ -80,7 +89,7 @@ class MemoryManager:
             if len(results) >= top_k:
                 break
 
-        #print("memory results:", results)
+        logger.info("Memory results: %s", results)
 
         return results
 

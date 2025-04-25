@@ -5,15 +5,18 @@ from dotenv import load_dotenv
 #from google import genai
 import google.generativeai as genai
 import os
+from .config.log_config import setup_logging
+
+logger = setup_logging(__name__)
 
 # Optional: import log from agent if shared, else define locally
-try:
-    from agent import log
-except ImportError:
-    import datetime
-    def log(stage: str, msg: str):
-        now = datetime.datetime.now().strftime("%H:%M:%S")
-        print(f"[{now}] [{stage}] {msg}")
+#try:
+#    from agent import log
+#except ImportError:
+#    import datetime
+#    def log(stage: str, msg: str):
+#        now = datetime.datetime.now().strftime("%H:%M:%S")
+#        print(f"[{now}] [{stage}] {msg}")
 
 load_dotenv()
 
@@ -23,7 +26,7 @@ if not api_key:
     raise ValueError("GOOGLE_API_KEY not found in environment variables")
 genai.configure(api_key=api_key)
 model = genai.GenerativeModel("gemini-2.0-flash")            
-print("Gemini API configured successfully")
+logger.info("Gemini API configured successfully")
 
 
 def generate_plan(
@@ -32,6 +35,11 @@ def generate_plan(
     tool_descriptions: Optional[str] = None
 ) -> str:
     """Generates a plan (tool call or final answer) using LLM based on structured perception and memory."""
+
+    logger.info("Generating plan...")
+    logger.info("Perception: %s", perception)
+    logger.info("Memory items: %s", memory_items)
+    logger.info("Tool descriptions: %s", tool_descriptions)
 
     memory_texts = "\n".join(f"- {m.text}" for m in memory_items) or "None"
 
@@ -87,12 +95,14 @@ IMPORTANT:
 - ✅ You have only 3 attempts. Final attempt must be FINAL_ANSWER]
 """
 
+    logger.info("Generate Plan Prompt: %s", prompt)
+
     try:
         response = model.generate_content(
             contents=prompt
         )
         raw = response.text.strip()
-        log("plan", f"LLM output: {raw}")
+        logger.info("Generate Plan LLM output: %s", raw)
 
         for line in raw.splitlines():
             if line.strip().startswith("FUNCTION_CALL:") or line.strip().startswith("FINAL_ANSWER:"):
@@ -101,5 +111,5 @@ IMPORTANT:
         return raw.strip()
 
     except Exception as e:
-        log("plan", f"⚠️ Decision generation failed: {e}")
+        logger.info("⚠️ Generate Plan Decision generation failed: %s", e)
         return "FINAL_ANSWER: [unknown]"

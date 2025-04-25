@@ -5,15 +5,19 @@ from dotenv import load_dotenv
 #from google import genai
 import google.generativeai as genai
 import re
+import json
+from .config.log_config import setup_logging
 
 # Optional: import log from agent if shared, else define locally
-try:
-    from agent import log
-except ImportError:
-    import datetime
-    def log(stage: str, msg: str):
-        now = datetime.datetime.now().strftime("%H:%M:%S")
-        print(f"[{now}] [{stage}] {msg}")
+#try:
+#    from agent import log
+#except ImportError:
+#    import datetime
+#    def log(stage: str, msg: str):
+#        now = datetime.datetime.now().strftime("%H:%M:%S")
+#        print(f"[{now}] [{stage}] {msg}")
+
+logger = setup_logging(__name__)
 
 load_dotenv()
 
@@ -23,7 +27,7 @@ if not api_key:
     raise ValueError("GOOGLE_API_KEY not found in environment variables")
 genai.configure(api_key=api_key)
 model = genai.GenerativeModel("gemini-2.0-flash")            
-print("Gemini API configured successfully")
+logger.info("Gemini API configured successfully")
 
 
 class PerceptionResult(BaseModel):
@@ -50,22 +54,22 @@ Output only the dictionary on a single line. Do NOT wrap it in ```json or other 
     """
 
     try:
-        print("Generating perception...")
-        print(prompt)
+        logger.info("Generating perception...")
+        logger.info("Prompt: %s", prompt)
         response = model.generate_content(
             contents=prompt
         )
-        print(f"LLM output: {response.text}")
+        logger.info("LLM output: %s", response.text)
         raw = response.text.strip()
-        log("perception", f"LLM output: {raw}")
+        #logger.info("perception", f"LLM output: {raw}")
 
         # Strip Markdown backticks if present
         clean = re.sub(r"^```json|```$", "", raw.strip(), flags=re.MULTILINE).strip()
 
         try:
-            parsed = eval(clean)
+            parsed = json.loads(clean)
         except Exception as e:
-            log("perception", f"⚠️ Failed to parse cleaned output: {e}")
+            logger.error("Failed to parse cleaned output: %s", e)
             raise
 
         # Fix common issues
@@ -76,5 +80,5 @@ Output only the dictionary on a single line. Do NOT wrap it in ```json or other 
         return PerceptionResult(user_input=user_input, **parsed)
 
     except Exception as e:
-        log("perception", f"⚠️ Extraction failed: {e}")
+        logger.error("Extraction failed: %s", e)
         return PerceptionResult(user_input=user_input)
