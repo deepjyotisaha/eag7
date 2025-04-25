@@ -2,7 +2,7 @@
 
 An AI-powered stock research assistant that combines a Chrome extension interface with a powerful backend for real-time stock analysis and insights. This tool helps investors and analysts make informed decisions by providing AI-powered analysis of stocks and market data.
 
-[](screenshot.png)
+![Demo Screenshot](screenshot.png)
 
 ## Features
 
