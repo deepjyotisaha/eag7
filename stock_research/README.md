@@ -2,16 +2,14 @@
 
 An AI-powered stock research assistant that combines a Chrome extension interface with a powerful backend for real-time stock analysis and insights. This tool helps investors and analysts make informed decisions by providing AI-powered analysis of stocks and market data.
 
-![Stock Research Assistant](screenshot.png)
-
 [![Demo Video](https://img.youtube.com/vi/ZpvHxjgI3KE/0.jpg)](https://www.youtube.com/watch?v=ZpvHxjgI3KE)
 
 ### Sample Queries
 ```bash
-- Show me key financial figures for Rainbow Hospitals**
-- What are the growth drivers for healthcare industry**
-- Summarize all the financial information you have obtained into a well formatted email which has background colour, headings and send it to name@example.com**
-- Compare the financial performance of Narayana Health and Rainbow Hospitals, use the financial figures available for comparison, then analyze their growth strategies and conclude who is better investment bet. Summarize all your findings and recommendations in a well formatted readable format, and send it as an email to name@example.com, make sure the email has background colour, appropriate sections and headings. You should only send the email once you have a final answer on which is a better investment bet and why, explain your reason. Use the facts and figures for comparison, stop fetching more information once you have basic facts and figures**
+- Show me key financial figures for Rainbow Hospitals
+- What are the growth drivers for healthcare industry
+- Summarize all the financial information you have obtained into a well formatted email which has background colour, headings and send it to name@example.com
+- Compare the financial performance of Narayana Health and Rainbow Hospitals, use the financial figures available for comparison, then analyze their growth strategies and conclude who is better investment bet. Summarize all your findings and recommendations in a well formatted readable format, and send it as an email to name@example.com, make sure the email has background colour, appropriate sections and headings. You should only send the email once you have a final answer on which is a better investment bet and why, explain your reason. Use the facts and figures for comparison, stop fetching more information once you have basic facts and figures
 ```
 
 ## Features
