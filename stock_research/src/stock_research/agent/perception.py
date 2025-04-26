@@ -32,53 +32,62 @@ logger.info("Gemini API configured successfully")
 
 class PerceptionResult(BaseModel):
     user_input: str
-    intent: Optional[str]
-    entities: List[str] = []
-    tool_hint: Optional[str] = None
+    intent: str           # Required field
+    entities: List[str] = []  # Required field with default
+    tool_hint: Optional[str] = None  # Optional field with default
 
 
 def extract_perception(user_input: str) -> PerceptionResult:
     """Extracts intent, entities, and tool hints using LLM"""
-
     prompt = f"""
-You are an AI that extracts structured facts from user input.
-
-Input: "{user_input}"
-
-Return the response as a Python dictionary with keys:
-- intent: (brief phrase about what the user wants)
-- entities: a list of strings representing keywords or values (e.g., ["INDIA", "ASCII"])
-- tool_hint: (name of the MCP tool that might be useful, if any)
-
-Output only the dictionary on a single line. Do NOT wrap it in ```json or other formatting. Ensure `entities` is a list of strings, not a dictionary.
+    You are an AI that extracts structured facts from user input.
+    Input: "{user_input}"
+    Return the response as a Python dictionary with keys:
+    - intent: (brief phrase about what the user wants)
+    - entities: a list of strings representing keywords or values
+    - tool_hint: (name of the MCP tool that might be useful, if any)
     """
 
     try:
         logger.info("Generating perception...")
-        logger.info("Prompt: %s", prompt)
-        response = model.generate_content(
-            contents=prompt
-        )
-        logger.info("LLM output: %s", response.text)
+        response = model.generate_content(contents=prompt)
         raw = response.text.strip()
-        #logger.info("perception", f"LLM output: {raw}")
+        logger.info("LLM output: %s", raw)
 
-        # Strip Markdown backticks if present
+        # Clean the output
         clean = re.sub(r"^```json|```$", "", raw.strip(), flags=re.MULTILINE).strip()
-
+        
         try:
             parsed = json.loads(clean)
-        except Exception as e:
-            logger.error("Failed to parse cleaned output: %s", e)
-            raise
-
-        # Fix common issues
-        if isinstance(parsed.get("entities"), dict):
-            parsed["entities"] = list(parsed["entities"].values())
-
-
-        return PerceptionResult(user_input=user_input, **parsed)
-
+            
+            # Ensure entities is a list
+            if isinstance(parsed.get("entities"), dict):
+                parsed["entities"] = list(parsed["entities"].values())
+            
+            # Create PerceptionResult with all required fields
+            return PerceptionResult(
+                user_input=user_input,
+                intent=parsed.get("intent", "unknown"),  # Provide default value
+                entities=parsed.get("entities", []),     # Provide default value
+                tool_hint=parsed.get("tool_hint")        # Optional field
+            )
+            
+        except json.JSONDecodeError as e:
+            logger.error("Failed to parse JSON: %s", e)
+            # Fallback with default values
+            return PerceptionResult(
+                user_input=user_input,
+                intent="unknown",
+                entities=[],
+                tool_hint=None
+            )
+            
     except Exception as e:
         logger.error("Extraction failed: %s", e)
-        return PerceptionResult(user_input=user_input)
+        # Fallback with default values
+        return PerceptionResult(
+            user_input=user_input,
+            intent="unknown",
+            entities=[],
+            tool_hint=None
+        )

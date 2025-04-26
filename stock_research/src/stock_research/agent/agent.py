@@ -12,6 +12,7 @@ from .userinteraction.userinteraction import user_interaction
 from ..backend.message_broker import message_broker
 from .llm.llm import LLMManager
 from .config.log_config import setup_logging
+from .action import parse_function_call
 
 #def log(stage: str, msg: str):
 #    """Simple console logging function"""
@@ -29,10 +30,8 @@ class Agent:
         
     async def process_query(
         self,
-        session: ClientSession,
+        server_manager,  # Now receives server_manager instead of session
         user_input: str,
-        tools: list,
-        tool_descriptions: str,
         session_id: Optional[str] = None
     ):
         try:
@@ -91,15 +90,12 @@ class Agent:
                     "result": f"Found {len(retrieved)} relevant items"
                 })
                 
-                # Generate plan
+                # Generate plan using all available tools
                 self.logger.info("Generating plan...")
-                #self.logger.info("Perception: %s", perception)
-                #self.logger.info("Retrieved: %s", retrieved)
-                #self.logger.info("Tool descriptions: %s", tool_descriptions)
                 plan = generate_plan(
                     perception,
                     retrieved,
-                    tool_descriptions=tool_descriptions
+                    tool_descriptions=server_manager.get_tools_description()
                 )
                 self.logger.info(f"Plan generated: {plan}")
                 await user_interaction.send_update(
@@ -119,7 +115,7 @@ class Agent:
                     final_result = plan.replace("FINAL_ANSWER:", "").strip()
                     self.logger.info(f"Final result: {final_result}")
                     
-                    # Send iteration summary
+                    # Send iteration summary and final result
                     await user_interaction.send_update(
                         session_id=session_id,
                         stage="reasoning",
@@ -132,7 +128,6 @@ class Agent:
                         llm_manager=self.llm
                     )
                     
-                    # Send final result
                     await user_interaction.send_update(
                         session_id=session_id,
                         stage="agent",
@@ -148,44 +143,55 @@ class Agent:
                     )
                     break
                 
-                # Execute tool
                 try:
                     self.logger.info("Executing tool...")
-                    result = await execute_tool(session, tools, plan)
-                    self.logger.info(f"Tool execution: {result.tool_name} -> {result.result}")
-                    
-                    await user_interaction.send_update(
-                        session_id=session_id,
-                        stage="tool",
-                        message=f"Using {result.tool_name}",
-                        iteration_data={
-                            "stage": "tool",
-                            "tool_name": result.tool_name,
-                            "action": result.arguments,
-                            "result": result.result
-                        },
-                        llm_manager=self.llm
-                    )
-                    
-                    reasoning_steps.append({
-                        "stage": "tool",
-                        "tool_name": result.tool_name,
-                        "action": result.arguments,
-                        "result": result.result
-                    })
-                    self.logger.info("Adding details in memory")
+                    # Extract tool name and arguments from plan
+                    if plan.startswith("FUNCTION_CALL:"):
+                        tool_name, args = parse_function_call(plan)
 
-                    # Store result in memory
-                    self.memory.add(MemoryItem(
-                        text=f"Tool call: {result.tool_name} with {result.arguments}, got: {result.result}",
-                        type="tool_output",
-                        tool_name=result.tool_name,
-                        user_query=user_input,
-                        tags=[result.tool_name],
-                        session_id=session_id
-                    ))
-                    
-                    user_input = f"Original task: {query}\nPrevious output: {result.result}\nWhat should I do next?"
+                        # Get the correct server for this tool
+                        if tool_name not in server_manager.tool_registry:
+                            raise ValueError(f"Unknown tool: {tool_name}")
+                            
+                        tool_info = server_manager.tool_registry[tool_name]
+                        server_name = tool_info['server']
+                        
+                        # Wrap arguments in input field for math tools
+                        if server_name == 'math':  # All math tools need input wrapper
+                            tool_args = {"input": args}
+                        else:
+                            tool_args = args
+                        
+                        # Execute the tool in its correct server context
+                        async def execute_tool_in_context(session):
+                            return await session.call_tool(tool_name, arguments=tool_args)
+                        
+                        result = await server_manager.execute_command(server_name, execute_tool_in_context)
+                        
+                        self.logger.info(f"Tool execution result: {result}")
+                        
+                        # Add the result to reasoning steps
+                        reasoning_steps.append({
+                            "stage": "tool",
+                            "tool_name": tool_name,
+                            "action": tool_args,
+                            "result": str(result)
+                        })
+                        
+                        # Store result in memory
+                        self.memory.add(MemoryItem(
+                            text=f"Tool call: {tool_name} with {tool_args}, got: {result}",
+                            type="tool_output",
+                            tool_name=tool_name,
+                            user_query=user_input,
+                            tags=[tool_name],
+                            session_id=session_id
+                        ))
+                        
+                        user_input = f"Original task: {query}\nPrevious output: {result}\nWhat should I do next?"
+                        
+                    else:
+                        raise ValueError("Plan must start with FUNCTION_CALL:")
                     
                 except Exception as e:
                     error_msg = f"Tool execution failed: {str(e)}"
@@ -219,6 +225,57 @@ class Agent:
             
         finally:
             message_broker.close_session(session_id)
+
+def extract_tool_name_from_plan(plan: str) -> str:
+    """Extract the tool name from the plan string.
+    
+    Args:
+        plan: A plan string in the format "FUNCTION_CALL: tool_name|a=7|b=10"
+        
+    Returns:
+        The tool name
+    """
+    if not plan.startswith("FUNCTION_CALL:"):
+        raise ValueError("Plan must start with FUNCTION_CALL:")
+        
+    parts = plan.split(":", 1)[1].strip().split("|")
+    return parts[0].strip()
+
+def extract_tool_args_from_plan(plan: str) -> dict:
+    """Extract the tool arguments from the plan string.
+    
+    Args:
+        plan: A plan string in the format "FUNCTION_CALL: tool_name|a=7|b=10"
+        
+    Returns:
+        Dictionary of parameters, e.g. {"a": 7, "b": 10}
+    """
+    if not plan.startswith("FUNCTION_CALL:"):
+        raise ValueError("Plan must start with FUNCTION_CALL:")
+        
+    parts = plan.split(":", 1)[1].strip().split("|")
+    
+    # Skip the tool name and process parameters
+    params = {}
+    for part in parts[1:]:  # Skip the first part (tool name)
+        if "=" in part:
+            key, value = part.split("=", 1)
+            key = key.strip()
+            value = value.strip()
+            
+            # Try to convert numeric values
+            try:
+                if "." in value:
+                    value = float(value)
+                else:
+                    value = int(value)
+            except ValueError:
+                # Keep as string if not numeric
+                pass
+                
+            params[key] = value
+            
+    return params
 
 # Global agent instance
 agent = Agent()

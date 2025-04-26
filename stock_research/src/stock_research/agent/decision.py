@@ -71,8 +71,8 @@ Input Summary:
 
 ✅ Examples:
 - FUNCTION_CALL: add|a=5|b=3
-- FUNCTION_CALL: strings_to_chars_to_int|input.string=INDIA
-- FUNCTION_CALL: int_list_to_exponential_sum|input.int_list=[73,78,68,73,65]
+- FUNCTION_CALL: strings_to_chars_to_int|string=INDIA
+- FUNCTION_CALL: int_list_to_exponential_sum|int_list=[73,78,68,73,65]
 - FINAL_ANSWER: [42]
 
 ✅ Examples:
@@ -95,7 +95,7 @@ IMPORTANT:
 - ✅ You have only 3 attempts. Final attempt must be FINAL_ANSWER]
 """
 
-    logger.info("Generate Plan Prompt: %s", prompt)
+    #logger.info("Generate Plan Prompt: %s", prompt)
 
     try:
         response = model.generate_content(

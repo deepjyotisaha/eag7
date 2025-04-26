@@ -29,19 +29,19 @@ class MemoryManager:
         self.embeddings: List[np.ndarray] = []
 
     def _get_embedding(self, text: str) -> np.ndarray:
-        logger.info("Getting embedding for text: %s", text)
+        #logger.info("Getting embedding for text: %s", text)
         response = requests.post(
             self.embedding_model_url,
             json={"model": self.model_name, "prompt": text}
         )
         response.raise_for_status()
-        logger.info("Embedding response: %s", response.json())
+        #logger.info("Embedding response: %s", response.json())
         return np.array(response.json()["embedding"], dtype=np.float32)
 
     def add(self, item: MemoryItem):
-        logger.info("Adding item to memory: %s", item)
+        #logger.info("Adding item to memory: %s", item)
         emb = self._get_embedding(item.text)
-        logger.info("Embedding: %s", emb)
+        #logger.info("Embedding: %s", emb)
         self.embeddings.append(emb)
         self.data.append(item)
 
@@ -89,7 +89,7 @@ class MemoryManager:
             if len(results) >= top_k:
                 break
 
-        logger.info("Memory results: %s", results)
+        #logger.info("Memory results: %s", results)
 
         return results
 

@@ -21,20 +21,12 @@ async def process_agent_query(session_id: str, query: str):
                 raise Exception("Server initialization timeout")
 
         try:
-            # Create a wrapper function that will be executed with the session
-            async def process_with_session(session):
-                # Extract just the tool objects from the registry
-                tools = [info['tool'] for info in mcp_server.tool_registry.values()]
-                return await agent.process_query(
-                    session=session,
-                    user_input=query,
-                    tools=tools,  # Pass the actual tool objects
-                    tool_descriptions=mcp_server.get_tools_description(),
-                    session_id=session_id
-                )
-            
-            # Execute using the RAG server since it's the main processing server
-            await mcp_server.execute_command('rag', process_with_session)
+            # Directly pass the server_manager to agent
+            await agent.process_query(
+                server_manager=mcp_server,
+                user_input=query,
+                session_id=session_id
+            )
             
         except Exception as e:
             error_details = traceback.format_exc()

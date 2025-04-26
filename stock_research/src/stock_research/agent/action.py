@@ -36,26 +36,19 @@ def parse_function_call(response: str) -> tuple[str, Dict[str, Any]]:
         parts = [p.strip() for p in function_info.split("|")]
         func_name, param_parts = parts[0], parts[1:]
 
-        result = {}
+        # Extract parameters
+        params = {}
         for part in param_parts:
             if "=" not in part:
-                raise ValueError(f"Invalid param: {part}")
+                continue
             key, value = part.split("=", 1)
-
             try:
-                parsed_value = ast.literal_eval(value)
-            except Exception:
-                parsed_value = value.strip()
+                # Handle numeric values
+                params[key] = ast.literal_eval(value)
+            except:
+                params[key] = value.strip()
 
-            # Handle nested keys
-            keys = key.split(".")
-            current = result
-            for k in keys[:-1]:
-                current = current.setdefault(k, {})
-            current[keys[-1]] = parsed_value
-
-        log("parser", f"Parsed: {func_name} → {result}")
-        return func_name, result
+        return func_name, params
 
     except Exception as e:
         log("parser", f"❌ Failed to parse FUNCTION_CALL: {e}")

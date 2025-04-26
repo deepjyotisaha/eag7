@@ -17,7 +17,7 @@ def main():
     print("Starting Stock Research Assistant...")
     
     # Start Chrome extension helper in background
-    threading.Thread(target=open_chrome_extension, daemon=True).start()
+    #threading.Thread(target=open_chrome_extension, daemon=True).start()
     
     # Run Flask application
     print("Starting backend server...")

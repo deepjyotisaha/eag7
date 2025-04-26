@@ -11,6 +11,7 @@ from pathlib import Path
 from ..agent.userinteraction import userinteraction
 from .message_broker import message_broker
 from ..agent import agent
+import traceback
 
 class MCPServerManager:
     _instance = None
@@ -227,10 +228,21 @@ class MCPServerManager:
         if not self.tool_registry:
             return "No tools available"
             
-        tool_list = [
-            f"- {name}: {info['description']}"
-            for name, info in sorted(self.tool_registry.items())
-        ]
+        tool_list = []
+        for name, info in sorted(self.tool_registry.items()):
+            tool = info['tool']
+            desc = [f"- {name}: {info['description']}"]
+            
+            # Add input schema if available
+            if hasattr(tool, 'inputSchema'):
+                desc.append("  Parameters:")
+                for param_name, param_info in tool.inputSchema['properties'].items():
+                    desc.append(f"    - {param_name}: {param_info.get('description', 'No description')}")
+                    if param_name in tool.inputSchema.get('required', []):
+                        desc[-1] += " (required)"
+                    
+            tool_list.extend(desc)
+            
         return "\n".join(tool_list)
 
     @property
@@ -241,44 +253,3 @@ class MCPServerManager:
 # Global instance
 mcp_server = MCPServerManager()
 
-async def process_agent_query(session_id: str, query: str):
-    """Process a query using the agent instance"""
-    try:
-        if not mcp_server.initialized:
-            await userinteraction.send_update(
-                session_id=session_id,
-                stage="agent",
-                message="Waiting for server initialization..."
-            )
-            if not mcp_server.wait_for_initialization():
-                raise Exception("Server initialization timeout")
-
-        try:
-            # Get the RAG session since it's the main processing server
-            rag_session = mcp_server.get_session('rag')
-            if not rag_session:
-                raise Exception("Could not get RAG session")
-
-            # Process directly with the session
-            await agent.process_query(
-                session=rag_session,
-                user_input=query,
-                tools=mcp_server.servers['rag']['tools'],
-                tool_descriptions=mcp_server.get_tools_description(),
-                session_id=session_id
-            )
-            
-        except Exception as e:
-            error_msg = f"Error during analysis: {str(e)}"
-            print(error_msg)
-            await userinteraction.send_update(
-                session_id=session_id,
-                stage="error",
-                message=error_msg,
-                is_final=True,
-                raw_data={"error": str(e)},
-                query_type="error"
-            )
-            
-    finally:
-        message_broker.close_session(session_id)
