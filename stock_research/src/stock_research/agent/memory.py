@@ -12,7 +12,7 @@ logger = setup_logging(__name__)
 
 class MemoryItem(BaseModel):
     text: str
-    type: Literal["preference", "tool_output", "fact", "query", "system"] = "fact"
+    type: Literal["preference", "tool_output", "fact", "query", "system", "final_result"] = "fact"
     timestamp: Optional[str] = datetime.now().isoformat()
     tool_name: Optional[str] = None
     user_query: Optional[str] = None

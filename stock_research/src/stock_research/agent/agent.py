@@ -115,6 +115,15 @@ class Agent:
                     final_result = plan.replace("FINAL_ANSWER:", "").strip()
                     self.logger.info(f"Final result: {final_result}")
                     
+                    # Store final result in memory using 'fact' type
+                    self.memory.add(MemoryItem(
+                        text=f"Final answer: {final_result}",
+                        type="final_result",
+                        user_query=query,  # original query
+                        tags=["final_answer"],
+                        session_id=session_id
+                    ))
+                    
                     # Send iteration summary and final result
                     await user_interaction.send_update(
                         session_id=session_id,
@@ -187,6 +196,31 @@ class Agent:
                             tags=[tool_name],
                             session_id=session_id
                         ))
+                        
+                        # Send iteration summary
+                        await user_interaction.send_iteration_summary(
+                            session_id=session_id,
+                            iteration_data={
+                                "stage": "tool_execution",
+                                "tool_name": tool_name,
+                                "action": tool_args,
+                                "result": str(result)
+                            },
+                            llm_manager=self.llm
+                        )
+                        
+                        # Send step update
+                        #await user_interaction.send_update(
+                        #    session_id=session_id,
+                        #    stage="tool",
+                        #    message=f"Executed {tool_name}",
+                        #    iteration_data={
+                        #        "stage": "tool",
+                        #        "tool_name": tool_name,
+                        #        "action": tool_args,
+                        #        "result": str(result)
+                        #    }
+                        #)
                         
                         user_input = f"Original task: {query}\nPrevious output: {result}\nWhat should I do next?"
                         

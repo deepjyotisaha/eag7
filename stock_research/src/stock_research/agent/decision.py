@@ -62,6 +62,7 @@ Guidelines:
 - Use nested keys (e.g., input.string) and square brackets for lists.
 - You can reference these relevant memories:
 {memory_texts}
+- if you can answer the question from the memories, go ahead and move to the next step.
 
 Input Summary:
 - User input: "{perception.user_input}"

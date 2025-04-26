@@ -47,7 +47,7 @@ def extract_perception(user_input: str) -> PerceptionResult:
     - entities: a list of strings representing keywords or values
     - tool_hint: (name of the MCP tool that might be useful, if any)
     """
-
+    logger.info("user_input: %s", user_input)
     try:
         logger.info("Generating perception...")
         response = model.generate_content(contents=prompt)

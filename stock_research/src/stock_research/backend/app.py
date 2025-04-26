@@ -34,6 +34,7 @@ def initialize_services():
         
         # Log available tools
         tools_desc = mcp_server.get_tools_description()
+        
         app.logger.info("MCP Server initialized successfully")
         app.logger.info(f"Available tools:\n{tools_desc}")
         
