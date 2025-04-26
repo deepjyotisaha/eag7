@@ -27,6 +27,8 @@ env/
 ENV/
 .env
 
+*.mp4
+
 # IDE
 .idea/
 .vscode/
