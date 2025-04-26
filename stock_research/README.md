@@ -2,9 +2,9 @@
 
 An AI-powered stock research assistant that combines a Chrome extension interface with a powerful backend for real-time stock analysis and insights. This tool helps investors and analysts make informed decisions by providing AI-powered analysis of stocks and market data.
 
+![Stock Research Assistant](screenshot.png)
 
-## Demo Video
-![Demo Video](stock_research_demo.mp4)
+[![Demo Video](https://img.youtube.com/vi/YOUR_VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=ZpvHxjgI3KE)
 
 ### Sample Queries
 
@@ -16,11 +16,10 @@ An AI-powered stock research assistant that combines a Chrome extension interfac
 ## Features
 
 - **Chrome Extension Interface**: Convenient side panel for easy access
-- **Document Search**: RAG (Retrieval-Augmented Generation) based search for relevant stock information
 - **Interactive Queries**: Natural language processing for stock-related questions
+- **Live Updates**: Real-time progress during analysis shown to end user
+- **Document Search**: RAG (Retrieval-Augmented Generation) based search for relevant stock information
 - **Multi-Server Architecture**: Separate servers for RAG, Math operations, and Gmail integration
-- **Live Updates**: Real-time progress during analysis
-- **Comprehensive Analysis**: Multiple data points and insights in one place
 
 ## System Requirements
 
@@ -69,6 +68,15 @@ ollama pull nomic-embed-text
 2. Enable "Developer mode" in the top right
 3. Click "Load unpacked" and select the `extension` directory from this project
 
+### 6. RAG Server Setup
+
+1. Add the knowledge source files to documents folder 
+2. Run the RAG MCP server in advance using the following command:
+```bash
+uv run src/stock_research/agent/mcp_server/rag/mcp_rag_server.py"
+ ```
+Note: Indexing time is proportional to the number and size of documents, it is recommended to run this in advance
+
 ## Architecture
 
 ### Backend Servers
@@ -108,19 +116,8 @@ uv run main.py
 
 2. Open the chrome extension
 3. Click the extension icon to open the side panel
+4. Type the sample queries shown above
 
-### Sample Queries
-
-- Show me key financial figures for Rainbow Hospitals
-- What are the growth drivers for healthcare industry
-- Summarize all the financial information you have obtained into a well formatted email which has background colour, headings and send it to deepjyoti.saha@gmail.com
-- Compare the financial performance of Narayana Health and Rainbow Hospitals, use the financial figures available for comparison, then analyze their growth strategies and conclude who is better investment bet. Summarize all your findings and recommendations in a well formatted readable format, and send it as an email to deepjyoti.saha@gmail.com, make sure the email has background colour, appropriate sections and headings. You should only send the email once you have a final answer on which is a better investment bet and why, explain your reason. Use the facts and figures for comparison
-
-### Real-time Updates
-
-- Progress indicators show analysis status
-- Live updates as new information is processed
-- Interactive results that can be expanded for details
 
 ## Project Structure
 
@@ -159,7 +156,9 @@ Place documents in the `agent/mcp_server/rag/documents` directory. The system wi
 
 ## License
 
-[Your License]
+## License
+
+This project is licensed under the [MIT License](./LICENSE).
 
 ## Contributing
 
